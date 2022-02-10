@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: abb_with_gripper
+    relative_path: urdf/abb_with_measurement_tool.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/abb_irb6640_with_camera_gripper.srdf
+  CONFIG:
+    author_name: dhara
+    author_email: dhara@gmail.com
+    generated_timestamp: 1643362962

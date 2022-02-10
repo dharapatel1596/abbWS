@@ -1,0 +1,8 @@
+prefix=/home/dhara/arm_ws/install
+
+Name: abb_moveit_plugins
+Description: Description of abb_moveit_plugins
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

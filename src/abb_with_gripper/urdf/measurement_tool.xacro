@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Here we define the 2 parameters of the macro -->
+  <xacro:macro name="measurement_tool" params="prefix connected_to">
+    <!-- Create a fixed joint with a parameterized name. -->
+    <joint name="${prefix}measurement_tool_joint" type="fixed">
+      <!-- The parent link must be read from the robot model it is attached to. -->
+      <parent link="${connected_to}"/>
+      <child link="${prefix}measurement_tool"/>
+      <!-- The tool is directly attached to the flange. -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+    <link name="${prefix}measurement_tool">
+      <visual>
+        <geometry>
+          <!-- The path to the visual meshes in the package. -->
+          <mesh filename="package://abb_with_gripper/meshes/visual/pg70.dae"/>
+        </geometry>
+      </visual>
+      <collision>
+        <geometry>
+          <!-- The path to the visual meshes in the package. -->
+          <mesh filename="package://abb_with_gripper/meshes/visual/pg70.dae"/>
+        </geometry>
+      </collision>
+      <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+
+    <!-- LEFT FINGER BASE -->
+    
+    <joint name="${prefix}finger_left_joint" type="prismatic" >
+      <parent link="${prefix}measurement_tool" />
+      <child link="${prefix}finger_left_link" />
+      <limit effort="100" lower="-0.001" upper="0.04" velocity="2.0"/>
+      <origin xyz="0 0 0.0789" rpy="0 0 0"/>
+      <axis xyz="0 1 0" />
+    </joint>
+
+    <link name="${prefix}finger_left_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.01 0.01"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.01 0.01"/>
+        </geometry>
+	<material name="black" />
+      </collision>
+      <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    
+<!-- LEFT FINGERTIP -->
+    
+    <joint name="${prefix}fingertip_left_joint" type="fixed" >
+      <parent link="${prefix}finger_left_link" />
+      <child link="${prefix}fingertip_left_link" />
+      <origin xyz="0 0.01 0.045" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${prefix}fingertip_left_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.01 0.1"/>
+        </geometry>
+        <material name="silver">
+          <color rgba="0.8 0.8 0.8 1"/>
+        </material>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.01 0.1"/>
+        </geometry>
+	<material name="black"/>
+      </collision>
+      <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    
+<!-- RIGHT FINGER BASE -->
+
+    <joint name="${prefix}finger_right_joint" type="prismatic" >
+      <mimic joint="${prefix}finger_left_joint" multiplier="1" offset="0"/>
+      <parent link="${prefix}measurement_tool" />
+      <child link="${prefix}finger_right_link" />
+      <limit effort="100" lower="-0.001" upper="0.04" velocity="2.0"/>
+      <origin xyz="0 0 0.0789" rpy="-0 0 0"/>
+      <axis xyz="0 -1 0" />
+    </joint>
+
+    <link name="${prefix}finger_right_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.01 0.01"/>
+        </geometry>
+	<material name="black"/>
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.01 0.01"/>
+        </geometry>
+	<material name="black"/>
+      </collision>
+      <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+    
+<!-- RIGHT FINGERTIP -->
+
+    <joint name="${prefix}fingertip_right_joint" type="fixed" >
+      <parent link="${prefix}finger_right_link" />
+      <child link="${prefix}fingertip_right_link" />
+      <origin xyz="0 -0.01 0.045" rpy="0 0 0"/>
+   </joint>
+
+    <link name="${prefix}fingertip_right_link">
+      <visual>
+        <geometry>
+          <box size="0.03 0.01 0.1"/>
+        </geometry>
+	<material name="silver" />
+       
+      </visual>
+      <collision>
+        <geometry>
+          <box size="0.03 0.01 0.1"/>
+        </geometry>
+	<material name="black"/>
+     </collision>
+     <inertial>
+            <mass value="0.1" />
+            <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
+        </inertial>
+    </link>
+
+    <!-- TCP frame -->
+    <joint name="${prefix}tcp_joint" type="fixed">
+      <origin xyz="0 0 0.116" rpy="0 0 0"/>
+      <parent link="${prefix}measurement_tool"/>
+      <child link="${prefix}tcp"/>
+    </joint>
+    <link name="${prefix}tcp"/>
+
+  </xacro:macro>
+</robot>

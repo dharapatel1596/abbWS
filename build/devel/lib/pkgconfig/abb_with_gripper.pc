@@ -1,0 +1,8 @@
+prefix=/home/dhara/arm_ws/build/devel
+
+Name: abb_with_gripper
+Description: Description of abb_with_gripper
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

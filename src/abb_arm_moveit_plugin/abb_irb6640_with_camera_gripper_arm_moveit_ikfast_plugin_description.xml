@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<library path="lib/libabb_irb6640_with_camera_gripper_arm_moveit_ikfast_plugin">
+  <class base_class_type="kinematics::KinematicsBase" name="abb_irb6640_with_camera_gripper_arm/IKFastKinematicsPlugin" type="abb_irb6640_with_camera_gripper_arm::IKFastKinematicsPlugin">
+    <description>IKFast61 plugin for closed-form kinematics of abb_irb6640_with_camera_gripper arm</description>
+  </class>
+</library>

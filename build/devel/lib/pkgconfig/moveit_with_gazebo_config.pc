@@ -1,0 +1,8 @@
+prefix=/home/dhara/arm_ws/build/devel
+
+Name: moveit_with_gazebo_config
+Description: Description of moveit_with_gazebo_config
+Version: 0.3.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

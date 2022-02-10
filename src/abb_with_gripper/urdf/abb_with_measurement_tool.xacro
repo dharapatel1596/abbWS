@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="abb_irb6640_with_camera_gripper">
+  <!-- abb -->
+  <xacro:include filename="$(find abb_irb6640_support)/urdf/irb6640_185_280_macro.xacro"/>
+  <!-- end-effector -->
+  <xacro:include filename="measurement_tool.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
+  <link name="world" />
+  <xacro:abb_irb6640_185_280 prefix="" connected_to="world" xyz="0 0 -2" rpy="0 0 0"/>
+  <!-- end-effector -->
+  <xacro:measurement_tool prefix="" connected_to="tool0"/>
+ 
+  <xacro:arg name="use_nominal_extrinsics" default="True" />
+  <xacro:arg name="add_plug" default="false" />
+  <xacro:arg name="use_mesh" default="true" />
+  <xacro:arg name="publish_pointcloud" default="true" />
+  <sensor_d435 parent="measurement_tool" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="$(arg add_plug)" use_mesh="$(arg use_mesh)" publish_pointcloud="$(arg publish_pointcloud)">
+    <origin xyz="-0.1 0 0" rpy="0 ${-pi/2} 0"/>
+  </sensor_d435>
+
+  <!-- define the robot|s position and orientation in the world coordinate system -->
+  
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link="base_link" /> <!-- TODO: check base_link name of robot -->
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+  <transmission name="trans_joint_1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_1_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_2_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_3_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_4">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_4_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_5">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_5_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_6">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_6">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_6_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_cylinder">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_cylinder">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_cylinder_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_joint_piston">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_piston">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="joint_piston_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_finger_left_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="finger_left_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="finger_left_joint_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_finger_right_joint">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="finger_right_joint">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="finger_right_joint_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+  <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so"/>
+        <!-- <robotNamespace>/abb_irb6640_with_camera_gripper</robotNamespace> -->
+  </gazebo>
+  <gazebo reference="base_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_1">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_2">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_3">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_4">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_5">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_6">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="tool0">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_piston">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="link_cylinder">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="measurement_tool">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="finger_left_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="fingertip_left_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="finger_right_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="fingertip_right_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+  <gazebo reference="camera_link">
+    <turnGravityOff>true</turnGravityOff>
+  </gazebo>
+</robot>
