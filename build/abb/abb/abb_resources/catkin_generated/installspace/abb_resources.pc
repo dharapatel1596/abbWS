@@ -1,4 +1,4 @@
-prefix=/home/dhara/arm_ws/install
+prefix=/usr/local
 
 Name: abb_resources
 Description: Description of abb_resources

@@ -4,12 +4,15 @@
   <xacro:include filename="$(find abb_irb6640_support)/urdf/irb6640_185_280_macro.xacro"/>
   <!-- end-effector -->
   <xacro:include filename="measurement_tool.xacro" />
+  <!-- Camera -->
   <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro"/>
+
   <link name="world" />
+
   <xacro:abb_irb6640_185_280 prefix="" connected_to="world" xyz="0 0 -2" rpy="0 0 0"/>
   <!-- end-effector -->
   <xacro:measurement_tool prefix="" connected_to="tool0"/>
- 
+  <!-- Camera -->
   <xacro:arg name="use_nominal_extrinsics" default="True" />
   <xacro:arg name="add_plug" default="false" />
   <xacro:arg name="use_mesh" default="true" />
@@ -22,7 +25,7 @@
   
   <joint name="world_joint" type="fixed">
     <parent link="world" />
-    <child link="base_link" /> <!-- TODO: check base_link name of robot -->
+    <child link="base_link" />
     <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
   </joint>
   <transmission name="trans_joint_1">

@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
-# import rospy
+import rospy
 # from math import pi
-# from time import sleep
+from time import sleep
 # import moveit_commander
 # from geometry_msgs.msg import Pose, PoseStamped
 # from moveit_commander import MoveGroupCommander,PlanningSceneInterface
@@ -59,3 +59,11 @@ with conn:
         target_joints[3] = joint4
         target_joints[4] = joint5
         target_joints[5] = joint6
+    else:
+        (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
+    target_jointsdown[0] = joint1
+    target_jointsdown[1] = joint2
+    target_jointsdown[2] = joint3
+    target_jointsdown[3] = joint4
+    target_jointsdown[4] = joint5
+    target_jointsdown[5] = joint6

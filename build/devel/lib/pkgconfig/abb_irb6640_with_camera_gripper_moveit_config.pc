@@ -1,0 +1,8 @@
+prefix=/home/dhara/arm_ws/build/devel
+
+Name: abb_irb6640_with_camera_gripper_moveit_config
+Description: Description of abb_irb6640_with_camera_gripper_moveit_config
+Version: 0.3.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "abb_irb6600_support"
-PROJECT_SPACE_DIR = "/home/dhara/arm_ws/devel"
+PROJECT_SPACE_DIR = "/home/dhara/arm_ws/build/devel"
 PROJECT_VERSION = "1.3.1"

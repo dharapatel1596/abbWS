@@ -19,7 +19,7 @@ except ImportError:
             break
     from catkin.environment_cache import generate_environment_script
 
-code = generate_environment_script('/home/dhara/arm_ws/devel/env.sh')
+code = generate_environment_script('/home/dhara/arm_ws/build/devel/env.sh')
 
 output_filename = '/home/dhara/arm_ws/build/catkin_generated/setup_cached.sh'
 with open(output_filename, 'w') as f:

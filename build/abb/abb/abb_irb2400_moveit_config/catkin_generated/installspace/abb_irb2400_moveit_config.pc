@@ -1,4 +1,4 @@
-prefix=/home/dhara/arm_ws/install
+prefix=/usr/local
 
 Name: abb_irb2400_moveit_config
 Description: Description of abb_irb2400_moveit_config

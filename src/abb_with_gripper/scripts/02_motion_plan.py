@@ -34,17 +34,8 @@ if __name__ == '__main__':
     abb.go()
     sleep(2)
 
-    if db.stacknum == 1:
-      abb.set_joint_value_target(db.target_joints)
-      abb.go()
-      sleep(2)
-    elif db.stacknum == 2:
-      abb.set_joint_value_target(db.target_joints)
-      abb.go()
-      sleep(2)
-    else:
-      abb.set_named_target("down")
-      abb.go()
-      sleep(2)
+    abb.set_joint_value_target(db.target_joints)
+    abb.go()
+    sleep(2)
       
     moveit_commander.roscpp_shutdown()

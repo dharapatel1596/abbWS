@@ -1,8 +1,0 @@
-prefix=/home/dhara/arm_ws/devel
-
-Name: finalv1_moveit_config
-Description: Description of finalv1_moveit_config
-Version: 0.3.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

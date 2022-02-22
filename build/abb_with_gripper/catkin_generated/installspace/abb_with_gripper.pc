@@ -1,4 +1,4 @@
-prefix=/home/dhara/arm_ws/install
+prefix=/usr/local
 
 Name: abb_with_gripper
 Description: Description of abb_with_gripper

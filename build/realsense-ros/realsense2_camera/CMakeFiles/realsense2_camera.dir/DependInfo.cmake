@@ -20,7 +20,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
-  "/home/dhara/arm_ws/devel/include"
+  "devel/include"
   "/home/dhara/arm_ws/src/realsense-ros/realsense2_camera/include"
   "/usr/local/include"
   "/opt/ros/melodic/include"

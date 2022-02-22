@@ -92,7 +92,7 @@
 <!-- RIGHT FINGER BASE -->
 
     <joint name="${prefix}finger_right_joint" type="prismatic" >
-      <mimic joint="${prefix}finger_left_joint" multiplier="1" offset="0"/>
+      <!-- <mimic joint="${prefix}finger_left_joint" multiplier="1" offset="0"/> -->
       <parent link="${prefix}measurement_tool" />
       <child link="${prefix}finger_right_link" />
       <limit effort="100" lower="-0.001" upper="0.04" velocity="2.0"/>

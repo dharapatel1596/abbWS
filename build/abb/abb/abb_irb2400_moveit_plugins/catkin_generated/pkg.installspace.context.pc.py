@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "moveit_core;pluginlib;roscpp;tf_conversions".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "abb_irb2400_moveit_plugins"
-PROJECT_SPACE_DIR = "/home/dhara/arm_ws/install"
+PROJECT_SPACE_DIR = "/usr/local"
 PROJECT_VERSION = "1.3.1"

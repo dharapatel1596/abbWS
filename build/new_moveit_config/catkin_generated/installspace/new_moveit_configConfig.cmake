@@ -68,13 +68,13 @@ set(new_moveit_config_CONFIG_INCLUDED TRUE)
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
   set(new_moveit_config_SOURCE_PREFIX /home/dhara/arm_ws/src/new_moveit_config)
-  set(new_moveit_config_DEVEL_PREFIX /home/dhara/arm_ws/devel)
+  set(new_moveit_config_DEVEL_PREFIX /home/dhara/arm_ws/build/devel)
   set(new_moveit_config_INSTALL_PREFIX "")
   set(new_moveit_config_PREFIX ${new_moveit_config_DEVEL_PREFIX})
 else()
   set(new_moveit_config_SOURCE_PREFIX "")
   set(new_moveit_config_DEVEL_PREFIX "")
-  set(new_moveit_config_INSTALL_PREFIX /home/dhara/arm_ws/install)
+  set(new_moveit_config_INSTALL_PREFIX /usr/local)
   set(new_moveit_config_PREFIX ${new_moveit_config_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/dhara/arm_ws/install/lib;/opt/ros/melodic/lib)
+    foreach(path /usr/local/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

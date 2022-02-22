@@ -1,4 +1,4 @@
-prefix=/home/dhara/arm_ws/install
+prefix=/usr/local
 
 Name: abb_irb6600_support
 Description: Description of abb_irb6600_support
