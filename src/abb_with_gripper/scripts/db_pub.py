@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
+from turtle import shape
 import rospy
-# from math import pi
+from math import pi
 from time import sleep
-# import moveit_commander
-# from geometry_msgs.msg import Pose, PoseStamped
-from std_msgs.msg import String, Int32, Float64MultiArray
+from geometry_msgs.msg import Pose, PoseStamped, Quaternion
+from std_msgs.msg import String, Int32, Float64MultiArray, MultiArrayDimension
 # from moveit_commander import MoveGroupCommander,PlanningSceneInterface
-# from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler
 import sqlite3
 from sqlite3 import Error
 
@@ -26,53 +26,78 @@ def create_connection(db_file):
     return conn
 
 def get_user_input():
+    
+    rospy.init_node('sender', anonymous=True)
+    
     pub = rospy.Publisher('/user_input', Float64MultiArray, queue_size=10)
-    rospy.init_node("dbfilepub")
+    #target_pose = PoseStamped()
     rate = rospy.Rate(10) # 10hz
     database = r"/home/dhara/armDB"
-    target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    target_jointsdown = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    target_pose = [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0,0,0,0,0,0,0]
+    target_pose_pick = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0]
     conn = create_connection(database)
-
+    # Instantiate Pose
+    
     while not rospy.is_shutdown():
-        stacknum = input("Which Stack should robot go:")
-        #print(stacknum)
         
+        stacknum = input("Which Stack robot should place the box:")
         with conn:
             #print("connection received\n")
             cur = conn.cursor()
-            cur.execute("select * from joints")
+            cur.execute("select * from world")
             raw = cur.fetchall()
-            
-            if (raw[1][0]) == stacknum:
-                (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[1])
-                target_joints[0] = joint1
-                target_joints[1] = joint2
-                target_joints[2] = joint3
-                target_joints[3] = joint4
-                target_joints[4] = joint5
-                target_joints[5] = joint6
-            elif (raw[2][0]) == stacknum:
-                (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[2])
-                target_joints[0] = joint1
-                target_joints[1] = joint2
-                target_joints[2] = joint3
-                target_joints[3] = joint4
-                target_joints[4] = joint5
-                target_joints[5] = joint6
+            #print(tuple(raw[0]))
+            (id, x, y, z, roll, pitch, yaw) = tuple(raw[2])
+            q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+            stack = Quaternion(*q)
+            target_pose[7] = x
+            target_pose[8] = y
+            target_pose[9] = z
+            target_pose[10] = stack.x
+            target_pose[11] = stack.y
+            target_pose[12] = stack.z
+            target_pose[13] = stack.w
+            if stacknum == 1:
+                (id, x, y, z, roll, pitch, yaw) = tuple(raw[0])
+                q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+                stack = Quaternion(*q)
+                target_pose[0] = x
+                target_pose[1] = y
+                target_pose[2] = z
+                target_pose[3] = stack.x
+                target_pose[4] = stack.y
+                target_pose[5] = stack.z
+                target_pose[6] = stack.w
+            elif stacknum == 2:
+                (id, x, y, z, roll, pitch, yaw) = tuple(raw[1])
+                q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+                stack = Quaternion(*q)
+                target_pose[0] = x
+                target_pose[1] = y
+                target_pose[2] = z
+                target_pose[3] = stack.x
+                target_pose[4] = stack.y
+                target_pose[5] = stack.z
+                target_pose[6] = stack.w
             else:
-                (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
-                target_joints[0] = joint1
-                target_joints[1] = joint2
-                target_joints[2] = joint3
-                target_joints[3] = joint4
-                target_joints[4] = joint5
-                target_joints[5] = joint6
+                (id, x, y, z, roll, pitch, yaw) = tuple(raw[2])
+                q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+                stack = Quaternion(*q)
+                target_pose[0] = x
+                target_pose[1] = y
+                target_pose[2] = z
+                target_pose[3] = stack.x
+                target_pose[4] = stack.y
+                target_pose[5] = stack.z
+                target_pose[6] = stack.w
             data_to_send = Float64MultiArray()  # the data to be sent, initialise the array
-            data_to_send.data = target_joints # assign the array with the value you want to send
+            #data_to_send = target_pose
+            data_to_send.data = target_pose   # assign the array with the value you want to send
+            #data_to_send.data = target_pose_pick
             rospy.loginfo(data_to_send)
             pub.publish(data_to_send)
-            rate.sleep()
+            
+
 
 
 if __name__ == '__main__':

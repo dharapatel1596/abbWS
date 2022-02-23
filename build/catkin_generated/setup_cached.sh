@@ -8,7 +8,9 @@
 
 # modified environment variables
 export CMAKE_PREFIX_PATH="/home/dhara/arm_ws/build/devel:$CMAKE_PREFIX_PATH"
-export PATH='/opt/ros/melodic/bin:/home/dhara/.local/bin:/home/dhara/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
+export LD_LIBRARY_PATH="/home/dhara/arm_ws/build/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/home/dhara/arm_ws/build/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/dhara/arm_ws/build'
-export ROSLISP_PACKAGE_DIRECTORIES='/home/dhara/arm_ws/build/devel/share/common-lisp'
+export PYTHONPATH="/home/dhara/arm_ws/build/devel/lib/python2.7/dist-packages:$PYTHONPATH"
+export ROSLISP_PACKAGE_DIRECTORIES="/home/dhara/arm_ws/build/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/dhara/arm_ws/src:$ROS_PACKAGE_PATH"

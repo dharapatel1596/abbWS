@@ -9,7 +9,13 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 
 from std_msgs.msg import String
-
+from tf.transformations import quaternion_from_euler
+# #abb.set_joint_value_target(target_joints)
+    # abb.go(joints=target_joints, wait=False)
+    # sleep(2)
+    # print('after sleep')
+    # abb.stop()
+    # print('after stop')
 def move_group_python_interface_tutorial():
   
   ## First initialize moveit_commander and rospy.
@@ -27,9 +33,7 @@ def move_group_python_interface_tutorial():
   scene = moveit_commander.PlanningSceneInterface()
 
   ## Instantiate a MoveGroupCommander object.  This object is an interface
-  ## to one group of joints.  In this case the group is the joints in the left
-  ## arm.  This interface can be used to plan and execute motions on the left
-  ## arm.
+  ## to one group of joints.  
   group = moveit_commander.MoveGroupCommander("arm")
 
 
@@ -66,41 +70,42 @@ def move_group_python_interface_tutorial():
 
   #to get end effector pose
   print(group.get_current_pose())
-
+  group.clear_pose_targets()
   ## Planning to a Pose goal
   ## ^^^^^^^^^^^^^^^^^^^^^^^
   ## We can plan a motion for this group to a desired pose for the
   ## end-effector
-  # print ("============ Generating plan 1")
-  # pose_target = geometry_msgs.msg.Pose()
-  # pose_target.orientation.w = 1.0
-  # pose_target.position.x = 0.7
-  # pose_target.position.y = -0.05
-  # pose_target.position.z = 1.1
-  # group.set_pose_target(pose_target)
+  print ("============ Generating plan 1")
+  
+  pose_target = geometry_msgs.msg.Pose()
+  pose_target.orientation.w = 1.0
+  pose_target.position.x = 0.7
+  pose_target.position.y = -0.05
+  pose_target.position.z = 1.1
+  group.set_pose_target(pose_target)
 
   # ## Now, we call the planner to compute the plan
   # ## and visualize it if successful
   # ## Note that we are just planning, not asking move_group
   # ## to actually move the robot
-  # plan1 = group.plan()
+  plan1 = group.plan()
 
-  # print ("============ Waiting while RVIZ displays plan1...")
-  # rospy.sleep(5)
+  print ("============ Waiting while RVIZ displays plan1...")
+  rospy.sleep(5)
 
 
   ## You can ask RVIZ to visualize a plan (aka trajectory) for you.  But the
   ## group.plan() method does this automatically so this is not that useful
   ## here (it just displays the same trajectory again).
-  # print ("============ Visualizing plan1")
-  # display_trajectory = moveit_msgs.msg.DisplayTrajectory()
+  print ("============ Visualizing plan1")
+  display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
-  # display_trajectory.trajectory_start = robot.get_current_state()
-  # display_trajectory.trajectory.append(plan1)
-  # display_trajectory_publisher.publish(display_trajectory);
+  display_trajectory.trajectory_start = robot.get_current_state()
+  display_trajectory.trajectory.append(plan1)
+  display_trajectory_publisher.publish(display_trajectory);
 
-  # print ("============ Waiting while plan1 is visualized (again)...")
-  # rospy.sleep(5)
+  print ("============ Waiting while plan1 is visualized (again)...")
+  rospy.sleep(5)
 
 
   ## Moving to a pose goal
@@ -189,7 +194,6 @@ def move_group_python_interface_tutorial():
   moveit_commander.roscpp_shutdown()
 
   ## END_TUTORIAL
-
   print ("============ STOPPING")
 
 
