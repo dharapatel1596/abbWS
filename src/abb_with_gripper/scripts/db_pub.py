@@ -28,78 +28,84 @@ def create_connection(db_file):
 def get_user_input():
     
     rospy.init_node('sender', anonymous=True)
-    
     pub = rospy.Publisher('/user_input', Float64MultiArray, queue_size=10)
-    #target_pose = PoseStamped()
     rate = rospy.Rate(10) # 10hz
+
     database = r"/home/dhara/armDB"
-    target_pose = [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0,0,0,0,0,0,0]
-    target_pose_pick = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0]
     conn = create_connection(database)
-    # Instantiate Pose
-    
+    target_pose = [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0,0,0,0,0,0,0]
+    new_raw = 0
     while not rospy.is_shutdown():
+        rospy.sleep(5)
         
-        stacknum = input("Which Stack robot should place the box:")
+        # stacknum = input("Which Stack robot should place the box:")
         with conn:
             #print("connection received\n")
             cur = conn.cursor()
-            cur.execute("select * from world")
-            raw = cur.fetchall()
-            #print(tuple(raw[0]))
-            (id, x, y, z, roll, pitch, yaw) = tuple(raw[2])
-            q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
-            stack = Quaternion(*q)
-            target_pose[7] = x
-            target_pose[8] = y
-            target_pose[9] = z
-            target_pose[10] = stack.x
-            target_pose[11] = stack.y
-            target_pose[12] = stack.z
-            target_pose[13] = stack.w
-            if stacknum == 1:
-                (id, x, y, z, roll, pitch, yaw) = tuple(raw[0])
-                q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
-                stack = Quaternion(*q)
-                target_pose[0] = x
-                target_pose[1] = y
-                target_pose[2] = z
-                target_pose[3] = stack.x
-                target_pose[4] = stack.y
-                target_pose[5] = stack.z
-                target_pose[6] = stack.w
-            elif stacknum == 2:
-                (id, x, y, z, roll, pitch, yaw) = tuple(raw[1])
-                q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
-                stack = Quaternion(*q)
-                target_pose[0] = x
-                target_pose[1] = y
-                target_pose[2] = z
-                target_pose[3] = stack.x
-                target_pose[4] = stack.y
-                target_pose[5] = stack.z
-                target_pose[6] = stack.w
-            else:
+            cur.execute("select * from placingdata")
+            placingraw = cur.fetchall()
+            
+            if new_raw < len(placingraw):
+
+                tableid = (placingraw[new_raw][0])
+                print(tableid)
+                cur.execute("select * from world")
+                raw = cur.fetchall()
+                #print(tuple(raw[0]))
                 (id, x, y, z, roll, pitch, yaw) = tuple(raw[2])
                 q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
                 stack = Quaternion(*q)
-                target_pose[0] = x
-                target_pose[1] = y
-                target_pose[2] = z
-                target_pose[3] = stack.x
-                target_pose[4] = stack.y
-                target_pose[5] = stack.z
-                target_pose[6] = stack.w
-            data_to_send = Float64MultiArray()  # the data to be sent, initialise the array
-            #data_to_send = target_pose
-            data_to_send.data = target_pose   # assign the array with the value you want to send
-            #data_to_send.data = target_pose_pick
-            rospy.loginfo(data_to_send)
-            pub.publish(data_to_send)
+                target_pose[7] = x
+                target_pose[8] = y
+                target_pose[9] = z
+                target_pose[10] = stack.x
+                target_pose[11] = stack.y
+                target_pose[12] = stack.z
+                target_pose[13] = stack.w
+
+                
+                if tableid == 1:
+                    (id, x, y, z, roll, pitch, yaw) = tuple(raw[0])
+                    q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+                    stack = Quaternion(*q)
+                    target_pose[0] = x
+                    target_pose[1] = y
+                    target_pose[2] = z
+                    target_pose[3] = stack.x
+                    target_pose[4] = stack.y
+                    target_pose[5] = stack.z
+                    target_pose[6] = stack.w
+                elif tableid == 2:
+                    (id, x, y, z, roll, pitch, yaw) = tuple(raw[1])
+                    q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+                    stack = Quaternion(*q)
+                    target_pose[0] = x
+                    target_pose[1] = y
+                    target_pose[2] = z
+                    target_pose[3] = stack.x
+                    target_pose[4] = stack.y
+                    target_pose[5] = stack.z
+                    target_pose[6] = stack.w
+                else:
+                    (id, x, y, z, roll, pitch, yaw) = tuple(raw[2])
+                    q = quaternion_from_euler(roll, pitch, yaw) #zyx, 
+                    stack = Quaternion(*q)
+                    target_pose[0] = x
+                    target_pose[1] = y
+                    target_pose[2] = z
+                    target_pose[3] = stack.x
+                    target_pose[4] = stack.y
+                    target_pose[5] = stack.z
+                    target_pose[6] = stack.w
+                new_raw = new_raw + 1
+                data_to_send = Float64MultiArray()  # the data to be sent, initialise the array
+                data_to_send.data = target_pose   # assign the array with the value you want to send
+                rospy.loginfo(data_to_send)
+                pub.publish(data_to_send)
+            else:
+                print('no new data')
             
-
-
-
+            
 if __name__ == '__main__':
     try:
         get_user_input()

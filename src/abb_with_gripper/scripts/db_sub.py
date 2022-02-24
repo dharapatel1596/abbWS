@@ -6,6 +6,22 @@ from moveit_commander import MoveGroupCommander,PlanningSceneInterface, RobotCom
 from std_msgs.msg import String, Int32, Float64MultiArray
 from geometry_msgs.msg import Pose, PoseStamped, Quaternion
 
+def listener():
+    rospy.init_node('listener', anonymous=True)
+    # Name of the subscriber topic should be same as publisher topic
+    rospy.Subscriber("/user_input", Float64MultiArray, callback)
+    
+    abb.allow_replanning(True)
+    abb.set_planning_time(15)
+    abb.set_num_planning_attempts(10)
+    abb.set_goal_position_tolerance(0.01)
+    abb.set_goal_orientation_tolerance(0.01)
+    abb.set_goal_tolerance(0.01)
+    abb.set_max_velocity_scaling_factor(1.0)
+    abb.set_max_acceleration_scaling_factor(1.0)
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin()
+
 def callback(data):
     target_pose_raw = data.data
     print(target_pose_raw)
@@ -73,52 +89,36 @@ def callback(data):
     gripper.go()
     rospy.sleep(1)
 
-
-def listener():
-    rospy.init_node('listener', anonymous=True)
-
-    rospy.Subscriber("/user_input", Float64MultiArray, callback)
-    
-    abb.allow_replanning(True)
-    abb.set_planning_time(15)
-
-    abb.set_num_planning_attempts(10)
-
-    abb.set_goal_position_tolerance(0.01)
-
-    abb.set_goal_orientation_tolerance(0.01)
-
-    abb.set_goal_tolerance(0.01)
-
-    abb.set_max_velocity_scaling_factor(1.0)
-
-    abb.set_max_acceleration_scaling_factor(1.0)
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()
+    # Go up in z direction
+    abb.set_start_state(robot.get_current_state())
+    target_pose.pose.position.z = target_pose.pose.position.z + 0.6
+    abb.set_pose_target(target_pose, end_effector_link)
+    abb.go()
+    rospy.sleep(2)
     
 
 if __name__ == '__main__':
 
     ## Instantiate a RobotCommander object.  This object is an interface to
-    ## the robot as a whole.
+    ## the robot as a whole including end effector.
     robot = RobotCommander()
 
-    # Connect to the abb move group
+    # Initialize the move group for manipulator
     abb = MoveGroupCommander("arm")
     
-    # Initialize the move group for the right gripper
+    # Initialize the move group for the gripper
     gripper = MoveGroupCommander("gripper")
     
     # Get the name of the end-effector link
     end_effector_link = abb.get_end_effector_link()
 
-    # Instantiate Pose
+    # Instantiate Pose for placing position
     target_pose = PoseStamped()
     target_pose.header.frame_id = abb.get_planning_frame()
 
-    # Instantiate Pose
+    # Instantiate Pose for picking position
     target_pose_pick = PoseStamped()
     target_pose_pick.header.frame_id = abb.get_planning_frame()
 
-    # Call subscriber
+    # Start the subscriber
     listener()

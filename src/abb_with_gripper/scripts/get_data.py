@@ -88,24 +88,24 @@ def move_group_python_interface_tutorial():
   # ## and visualize it if successful
   # ## Note that we are just planning, not asking move_group
   # ## to actually move the robot
-  plan1 = group.plan()
+  # plan1 = group.plan()
 
-  print ("============ Waiting while RVIZ displays plan1...")
-  rospy.sleep(5)
+  # print ("============ Waiting while RVIZ displays plan1...")
+  # rospy.sleep(5)
 
 
-  ## You can ask RVIZ to visualize a plan (aka trajectory) for you.  But the
-  ## group.plan() method does this automatically so this is not that useful
-  ## here (it just displays the same trajectory again).
-  print ("============ Visualizing plan1")
-  display_trajectory = moveit_msgs.msg.DisplayTrajectory()
+  # ## You can ask RVIZ to visualize a plan (aka trajectory) for you.  But the
+  # ## group.plan() method does this automatically so this is not that useful
+  # ## here (it just displays the same trajectory again).
+  # print ("============ Visualizing plan1")
+  # display_trajectory = moveit_msgs.msg.DisplayTrajectory()
 
-  display_trajectory.trajectory_start = robot.get_current_state()
-  display_trajectory.trajectory.append(plan1)
-  display_trajectory_publisher.publish(display_trajectory);
+  # display_trajectory.trajectory_start = robot.get_current_state()
+  # display_trajectory.trajectory.append(plan1)
+  # display_trajectory_publisher.publish(display_trajectory);
 
-  print ("============ Waiting while plan1 is visualized (again)...")
-  rospy.sleep(5)
+  # print ("============ Waiting while plan1 is visualized (again)...")
+  # rospy.sleep(5)
 
 
   ## Moving to a pose goal

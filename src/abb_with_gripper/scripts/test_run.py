@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+from ctypes import resize
 from fileinput import close
 import sys
 import rospy
@@ -7,7 +8,9 @@ from math import pi
 from time import sleep
 import moveit_commander
 from geometry_msgs.msg import Pose, PoseStamped, Quaternion
-from moveit_commander import MoveGroupCommander,PlanningSceneInterface,RobotCommander
+from shape_msgs.msg import SolidPrimitive
+from moveit_msgs.msg import CollisionObject
+from moveit_commander import MoveGroupCommander,PlanningSceneInterface,RobotCommander, PlanningScene
 from tf.transformations import quaternion_from_euler
 
 
@@ -56,6 +59,23 @@ def move_group_python_interface_tutorial():
         gripper.go()
         rospy.sleep(1)
 
+        ## Adding Objects to the Planning Scene
+        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ## First, we will create a box in the planning scene between the fingers:
+
+        box_name = "box"
+        box_pose = PoseStamped()
+        box_pose.header.frame_id = "link_6"
+        box_pose.pose.orientation.w = 1.0
+        box_pose.pose.position.x = 0.15
+        box_pose.pose.position.z = 0.0
+
+        scene.add_box(box_name, box_pose, size=(0.06, 0.06, 0.06))
+        #attach box
+        grasping_group = 'gripper'
+        touch_links = robot.get_link_names(group=grasping_group)
+        scene.attach_box(end_effector_link, box_name, touch_links=touch_links)
+
         start_pose = PoseStamped()
         start_pose.header.frame_id = abb.get_planning_frame()
         # Position for table 1
@@ -70,26 +90,26 @@ def move_group_python_interface_tutorial():
         # start_pose.pose.orientation = Quaternion(*q)
 
         # Position for table 2
-        # start_pose.pose.position.x = -1.23 
-        # start_pose.pose.position.y = 1.75 
-        # start_pose.pose.position.z = 1.78  
-        # # start_pose.pose.orientation.x = -0.5
-        # # start_pose.pose.orientation.y = 0.5
-        # # start_pose.pose.orientation.z = 0.5
-        # # start_pose.pose.orientation.w = 0.5
-        # q = quaternion_from_euler(0, 1.5707963, 1.5707963) #zyx
-        # start_pose.pose.orientation = Quaternion(*q)
+        start_pose.pose.position.x = -1.23 
+        start_pose.pose.position.y = 1.75 
+        start_pose.pose.position.z = 1.78  
+        # start_pose.pose.orientation.x = -0.5
+        # start_pose.pose.orientation.y = 0.5
+        # start_pose.pose.orientation.z = 0.5
+        # start_pose.pose.orientation.w = 0.5
+        q = quaternion_from_euler(0, 1.5707963, 1.5707963) #zyx
+        start_pose.pose.orientation = Quaternion(*q)
 
          # Position for table 0
-        start_pose.pose.position.x = 1.8 
-        start_pose.pose.position.y = 0.0 
-        start_pose.pose.position.z = 1.77 
-        # start_pose.pose.orientation.x = 1.45743564202e-05
-        # start_pose.pose.orientation.y = 0.6
-        # #start_pose.pose.orientation.z = 0.5
-        # start_pose.pose.orientation.w = 0.8 
-        q = quaternion_from_euler(0, 1.5, 0) #zyx, 
-        start_pose.pose.orientation = Quaternion(*q)
+        # start_pose.pose.position.x = 1.8 
+        # start_pose.pose.position.y = 0.0 
+        # start_pose.pose.position.z = 1.77 
+        # # start_pose.pose.orientation.x = 1.45743564202e-05
+        # # start_pose.pose.orientation.y = 0.6
+        # # #start_pose.pose.orientation.z = 0.5
+        # # start_pose.pose.orientation.w = 0.8 
+        # q = quaternion_from_euler(0, 1.5, 0) #zyx, 
+        # start_pose.pose.orientation = Quaternion(*q)
 
         #print (start_pose)
         # IK Fast
@@ -102,33 +122,16 @@ def move_group_python_interface_tutorial():
         abb.go()
         rospy.sleep(2)
 
-        # go down in z direction to pick the box
+        #go down in z direction to pick the box
         abb.set_start_state(robot.get_current_state())
         start_pose.pose.position.z = start_pose.pose.position.z - 0.6
         abb.set_pose_target(start_pose, end_effector_link)
         abb.go()
         rospy.sleep(2)
 
-        ## Adding Objects to the Planning Scene
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        ## First, we will create a box in the planning scene between the fingers:
-
-        box_name = "box"
-        box_pose = PoseStamped()
-        box_pose.header.frame_id = "link_6"
-        box_pose.pose.orientation.w = 1.0
-        box_pose.pose.position.x = 0.15
-        box_pose.pose.position.z = 0.0
-        
-        # scene.add_box(box_name, box_pose, size=(0.065, 0.065, 0.065))
-        # #attach box
-        # grasping_group = "gripper"
-        # touch_links = robot.get_link_names(group=grasping_group)
-        # scene.attach_box(end_effector_link, box_name, touch_links=touch_links)
-        
-        # scene.remove_attached_object(end_effector_link, name=box_name)
-
-        # scene.remove_world_object(box_name)
+       
+        scene.remove_attached_object(end_effector_link, name=box_name)
+        scene.remove_world_object(box_name)
         
 
         # Shut down MoveIt cleanly
