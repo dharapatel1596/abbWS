@@ -1,4 +1,4 @@
-prefix=/usr/local
+prefix=/home/dhara/arm_ws/install
 
 Name: realsense_gazebo_plugin
 Description: Description of realsense_gazebo_plugin

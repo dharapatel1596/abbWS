@@ -1,4 +1,4 @@
-prefix=/usr/local
+prefix=/home/dhara/arm_ws/install
 
 Name: abb_irb6640_with_camera_gripper_ikfast_arm_plugin
 Description: Description of abb_irb6640_with_camera_gripper_ikfast_arm_plugin

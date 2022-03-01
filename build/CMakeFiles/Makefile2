@@ -550,42 +550,6 @@ abb/abb/abb_resources/preinstall:
 .PHONY : abb/abb/abb_resources/preinstall
 
 #=============================================================================
-# Directory level rules for directory moveit_with_gazebo_config
-
-# Convenience name for "all" pass in the directory.
-moveit_with_gazebo_config/all:
-
-.PHONY : moveit_with_gazebo_config/all
-
-# Convenience name for "clean" pass in the directory.
-moveit_with_gazebo_config/clean:
-
-.PHONY : moveit_with_gazebo_config/clean
-
-# Convenience name for "preinstall" pass in the directory.
-moveit_with_gazebo_config/preinstall:
-
-.PHONY : moveit_with_gazebo_config/preinstall
-
-#=============================================================================
-# Directory level rules for directory new_moveit_config
-
-# Convenience name for "all" pass in the directory.
-new_moveit_config/all:
-
-.PHONY : new_moveit_config/all
-
-# Convenience name for "clean" pass in the directory.
-new_moveit_config/clean:
-
-.PHONY : new_moveit_config/clean
-
-# Convenience name for "preinstall" pass in the directory.
-new_moveit_config/preinstall:
-
-.PHONY : new_moveit_config/preinstall
-
-#=============================================================================
 # Directory level rules for directory realsense-ros/realsense2_description
 
 # Convenience name for "all" pass in the directory.

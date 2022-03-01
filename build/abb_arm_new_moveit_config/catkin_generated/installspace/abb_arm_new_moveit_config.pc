@@ -1,4 +1,4 @@
-prefix=/usr/local
+prefix=/home/dhara/arm_ws/install
 
 Name: abb_arm_new_moveit_config
 Description: Description of abb_arm_new_moveit_config

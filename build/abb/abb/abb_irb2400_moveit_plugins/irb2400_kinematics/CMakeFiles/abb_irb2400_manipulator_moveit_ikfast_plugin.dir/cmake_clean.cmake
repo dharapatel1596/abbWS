@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/abb_irb2400_manipulator_moveit_ikfast_plugin.dir/src/abb_irb2400_manipulator_ikfast_moveit_plugin.cpp.o"
-  "../../../../devel/lib/libabb_irb2400_manipulator_moveit_ikfast_plugin.pdb"
-  "../../../../devel/lib/libabb_irb2400_manipulator_moveit_ikfast_plugin.so"
+  "/home/dhara/arm_ws/devel/lib/libabb_irb2400_manipulator_moveit_ikfast_plugin.pdb"
+  "/home/dhara/arm_ws/devel/lib/libabb_irb2400_manipulator_moveit_ikfast_plugin.so"
 )
 
 # Per-language clean rules from dependency scanning.
