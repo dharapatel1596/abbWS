@@ -65,22 +65,24 @@ def move_group_python_interface_tutorial():
 
         box_name = "box"
         box_pose = PoseStamped()
-        box_pose.header.frame_id = "link_6"
+        box_pose.header.frame_id = "world"
         box_pose.pose.orientation.w = 1.0
-        box_pose.pose.position.x = 0.15
-        box_pose.pose.position.z = 0.0
+        box_pose.pose.position.x = -1.25
+        box_pose.pose.position.y = 1.85
+        box_pose.pose.position.z = 0.95
 
         scene.add_box(box_name, box_pose, size=(0.06, 0.06, 0.06))
-        #attach box
-        grasping_group = 'gripper'
-        touch_links = robot.get_link_names(group=grasping_group)
-        scene.attach_box(end_effector_link, box_name, touch_links=touch_links)
+        print('added box')
+        ## attach box
+        #grasping_group = 'gripper'
+        #touch_links = robot.get_link_names(group=grasping_group)
+        #scene.attach_box(end_effector_link, box_name, touch_links=touch_links)
 
         start_pose = PoseStamped()
         start_pose.header.frame_id = abb.get_planning_frame()
-        # Position for table 1
+        ## Position for table 1
         # start_pose.pose.position.x = 0.0 
-        # start_pose.pose.position.y = 1.80 
+        # start_pose.pose.position.y = 2.0 
         # start_pose.pose.position.z = 1.78  
         # # start_pose.pose.orientation.x = -0.5
         # # start_pose.pose.orientation.y = 0.5
@@ -90,8 +92,8 @@ def move_group_python_interface_tutorial():
         # start_pose.pose.orientation = Quaternion(*q)
 
         # Position for table 2
-        start_pose.pose.position.x = -1.23 
-        start_pose.pose.position.y = 1.75 
+        start_pose.pose.position.x = -1.25 
+        start_pose.pose.position.y = 1.85 
         start_pose.pose.position.z = 1.78  
         # start_pose.pose.orientation.x = -0.5
         # start_pose.pose.orientation.y = 0.5
@@ -101,7 +103,7 @@ def move_group_python_interface_tutorial():
         start_pose.pose.orientation = Quaternion(*q)
 
          # Position for table 0
-        # start_pose.pose.position.x = 1.8 
+        # start_pose.pose.position.x = 2.0
         # start_pose.pose.position.y = 0.0 
         # start_pose.pose.position.z = 1.77 
         # # start_pose.pose.orientation.x = 1.45743564202e-05
@@ -127,11 +129,11 @@ def move_group_python_interface_tutorial():
         start_pose.pose.position.z = start_pose.pose.position.z - 0.6
         abb.set_pose_target(start_pose, end_effector_link)
         abb.go()
-        rospy.sleep(2)
+        rospy.sleep(10)
 
        
-        scene.remove_attached_object(end_effector_link, name=box_name)
-        scene.remove_world_object(box_name)
+        #scene.remove_attached_object(end_effector_link, name=box_name)
+        #scene.remove_world_object(box_name)
         
 
         # Shut down MoveIt cleanly

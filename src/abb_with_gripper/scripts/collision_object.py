@@ -36,8 +36,43 @@ def wait_for_state_update(box_name,scene,
 
         # If we exited the while loop without returning then we timed out
         return False
+def add_box_on_table(tableid,scene):
 
-def add_box(scene, timeout=4):
+        ## Adding Objects to the Planning Scene
+        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ## First, we will create a box in the planning scene between the fingers:
+        box_pose = PoseStamped()
+        box_pose.header.frame_id = "world"
+        if tableid == "1.0":
+            box_pose.pose.orientation.w = 1.0
+            box_pose.pose.position.y = 2.0
+            box_pose.pose.position.z = 0.95
+            box_name = "1.0"
+            return scene.add_box(box_name, box_pose, size=(0.05, 0.05, 0.05))
+        elif tableid == "2.0":
+            box_pose.pose.orientation.w = 1.0
+            box_pose.pose.position.x = -1.25
+            box_pose.pose.position.y = 1.85
+            box_pose.pose.position.z = 0.95
+            box_name = "2.0"
+            return scene.add_box(box_name, box_pose, size=(0.05, 0.05, 0.05))
+        elif tableid == "0":
+            box_pose.pose.orientation.w = 1.0
+            box_pose.pose.position.x = 2.0
+            box_pose.pose.position.z = 0.95
+            box_name = "0"
+            return scene.add_box(box_name, box_pose, size=(0.05, 0.05, 0.05))
+        else:
+            return False
+
+def remove_box_from_table(box_name,scene):
+        
+        ## Removing Objects from the Planning Scene
+        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ## We can remove the box from the world.
+        return scene.remove_world_object(box_name)
+
+def add_box_gripper(scene, timeout=4):
 
         ## Adding Objects to the Planning Scene
         ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

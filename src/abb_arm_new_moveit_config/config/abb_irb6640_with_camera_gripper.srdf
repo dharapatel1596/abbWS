@@ -42,8 +42,8 @@
         <joint name="finger_right_joint" value="0.04" />
     </group_state>
     <group_state name="close" group="gripper">
-        <joint name="finger_left_joint" value="0.0119" />
-        <joint name="finger_right_joint" value="0.0099" />
+        <joint name="finger_left_joint" value="0.0352" />
+        <joint name="finger_right_joint" value="0.0364" />
     </group_state>
     <group_state name="middle" group="gripper">
         <joint name="finger_left_joint" value="0.0223" />

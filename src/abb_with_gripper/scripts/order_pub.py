@@ -30,7 +30,7 @@ def send_order_to_robot():
 
     database = r"/home/dhara/arm_ws/src/armDB"
     conn = create_connection(database)
-    target_pose = [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0,0,0,0,0,0,0]
+    target_pose = [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0,0,0,0,0,0,0,0]
     new_raw = 0
     while not rospy.is_shutdown():
         with conn:
@@ -42,6 +42,7 @@ def send_order_to_robot():
             if new_raw < len(placingraw):
 
                 tableid = (placingraw[new_raw][0])
+                target_pose[14] = tableid
                 print("Order for table number: %d" %tableid)
                 print('.--.')
                 cur.execute("select * from world")
@@ -106,4 +107,6 @@ if __name__ == '__main__':
     try:
         send_order_to_robot()
     except rospy.ROSInterruptException:
+        pass
+    except KeyboardInterrupt:
         pass
