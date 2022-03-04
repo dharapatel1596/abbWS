@@ -23,7 +23,7 @@ def create_connection(db_file):
 
 def send_order_to_robot():
     
-    rospy.init_node('sender', anonymous=True)
+    rospy.init_node('order_sender', anonymous=True)
     pub = rospy.Publisher('/robot_line', Float64MultiArray, queue_size=10)
     
     rate = rospy.Rate(10) # 10hz
@@ -108,5 +108,5 @@ if __name__ == '__main__':
         send_order_to_robot()
     except rospy.ROSInterruptException:
         pass
-    except KeyboardInterrupt:
-        pass
+    except rospy.ROSInternalException:
+        print('ROS internal error')

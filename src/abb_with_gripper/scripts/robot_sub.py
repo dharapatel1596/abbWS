@@ -8,9 +8,7 @@ from geometry_msgs.msg import PoseStamped
 from collision_object import add_box_gripper, attach_box, detach_box, remove_box, add_box_on_table, remove_box_from_table
 
 def get_order():
-    rospy.init_node('listener', anonymous=True)
-    ## Name of the subscriber topic should be same as publisher topic
-    rospy.Subscriber("/robot_line", Float64MultiArray, callback)
+    rospy.init_node('order_receiver', anonymous=True)
     abb.allow_replanning(True)
     abb.set_planning_time(5)
     abb.set_num_planning_attempts(10)
@@ -19,6 +17,8 @@ def get_order():
     abb.set_goal_tolerance(0.01)
     abb.set_max_velocity_scaling_factor(1.0)
     abb.set_max_acceleration_scaling_factor(1.0)
+    ## Name of the subscriber topic should be same as publisher topic
+    rospy.Subscriber("/robot_line", Float64MultiArray, callback)
     ## spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
@@ -117,7 +117,7 @@ def callback(data):
         ## Go up in z direction
         abb.set_start_state(robot.get_current_state())
         target_pose.pose.position.z = target_pose.pose.position.z + 0.64
-        abb.set_pose_target(target_pose, end_effector_link)
+        abb.set_pose_target(target_pose,end_effector_link)
         abb.go()
         rospy.sleep(2)
 
@@ -152,5 +152,8 @@ if __name__ == '__main__':
     target_pose_pick = PoseStamped()
     target_pose_pick.header.frame_id = abb.get_planning_frame()
 
-    ## Start the subscriber
-    get_order()
+    # Start the subscriber
+    try:
+        get_order()
+    except rospy.ROSInterruptException:
+        pass
