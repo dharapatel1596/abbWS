@@ -24,46 +24,47 @@ def create_connection(db_file):
 
     return conn
 
-database = r"/home/dhara/armDB"
+database = r"/home/dhara/arm_ws/src/armDB"
 conn = create_connection(database)
 target_joints = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 target_jointsdown = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 #while 1:
-stacknum = input("Which Stack should robot go:")
+#stacknum = input("Which Stack should robot go:")
 with conn:
     #print("connection received\n")
     cur = conn.cursor()
-    cur.execute("select * from joints")
-    raw = cur.fetchall()
-    (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
-    target_jointsdown[0] = joint1
-    target_jointsdown[1] = joint2
-    target_jointsdown[2] = joint3
-    target_jointsdown[3] = joint4
-    target_jointsdown[4] = joint5
-    target_jointsdown[5] = joint6
+    cur.execute("select * from completed_orders")
+    raw = cur.fetchone()
+    print(raw)
+    # (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
+    # target_jointsdown[0] = joint1
+    # target_jointsdown[1] = joint2
+    # target_jointsdown[2] = joint3
+    # target_jointsdown[3] = joint4
+    # target_jointsdown[4] = joint5
+    # target_jointsdown[5] = joint6
     
-    if (raw[1][0]) == stacknum:
-        (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[1])
-        target_joints[0] = joint1
-        target_joints[1] = joint2
-        target_joints[2] = joint3
-        target_joints[3] = joint4
-        target_joints[4] = joint5
-        target_joints[5] = joint6
-    elif (raw[2][0]) == stacknum:
-        (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[2])
-        target_joints[0] = joint1
-        target_joints[1] = joint2
-        target_joints[2] = joint3
-        target_joints[3] = joint4
-        target_joints[4] = joint5
-        target_joints[5] = joint6
-    else:
-        (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
-    target_jointsdown[0] = joint1
-    target_jointsdown[1] = joint2
-    target_jointsdown[2] = joint3
-    target_jointsdown[3] = joint4
-    target_jointsdown[4] = joint5
-    target_jointsdown[5] = joint6
+    # if (raw[1][0]) == stacknum:
+    #     (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[1])
+    #     target_joints[0] = joint1
+    #     target_joints[1] = joint2
+    #     target_joints[2] = joint3
+    #     target_joints[3] = joint4
+    #     target_joints[4] = joint5
+    #     target_joints[5] = joint6
+    # elif (raw[2][0]) == stacknum:
+    #     (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[2])
+    #     target_joints[0] = joint1
+    #     target_joints[1] = joint2
+    #     target_joints[2] = joint3
+    #     target_joints[3] = joint4
+    #     target_joints[4] = joint5
+    #     target_joints[5] = joint6
+    # else:
+    #     (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
+    # target_jointsdown[0] = joint1
+    # target_jointsdown[1] = joint2
+    # target_jointsdown[2] = joint3
+    # target_jointsdown[3] = joint4
+    # target_jointsdown[4] = joint5
+    # target_jointsdown[5] = joint6

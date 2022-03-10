@@ -7,14 +7,15 @@ from geometry_msgs.msg import PoseStamped
 def wait_for_state_update(box_name,scene,
         box_is_known=False, box_is_attached=False, timeout=4
     ):
-        ## Ensuring Collision Updates Are Received
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """ Ensuring Collision Updates Are Received
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         ## If the Python node dies before publishing a collision object update message, the message
         ## could get lost and the box will not appear. To ensure that the updates are
         ## made, we wait until we see the changes reflected in the
         ## ``get_attached_objects()`` and ``get_known_object_names()`` lists.
         ## we call this function after adding, removing, attaching or detaching an object in the planning scene. 
         ## We then wait until the updates have been made or ``timeout`` seconds have passed
+        """
         start = rospy.get_time()
         seconds = rospy.get_time()
         while (seconds - start < timeout) and not rospy.is_shutdown():
@@ -38,8 +39,9 @@ def wait_for_state_update(box_name,scene,
         return False
 def add_box_on_table(tableid,scene):
 
-        ## Adding Objects to the Planning Scene
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """ Adding Objects to the Planning Scene
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """
         ## First, we will create a box in the planning scene between the fingers:
         box_pose = PoseStamped()
         box_pose.header.frame_id = "world"
@@ -66,16 +68,17 @@ def add_box_on_table(tableid,scene):
             return False
 
 def remove_box_from_table(box_name,scene):
-        
-        ## Removing Objects from the Planning Scene
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """ Removing Objects from the Planning Scene
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """
         ## We can remove the box from the world.
         return scene.remove_world_object(box_name)
 
 def add_box_gripper(scene, timeout=4):
 
-        ## Adding Objects to the Planning Scene
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """ Adding Objects to the Planning Scene
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """
         ## First, we will create a box in the planning scene between the fingers:
         box_pose = PoseStamped()
         box_pose.header.frame_id = "link_6"
@@ -88,13 +91,14 @@ def add_box_gripper(scene, timeout=4):
 
 def attach_box(box_name,robot,scene,eef_link, timeout=4):
 
-        ## Attaching Objects to the Robot
+        """Attaching Objects to the Robot
         ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
         ## Next, we will attach the box to the abb robot wrist. Manipulating objects requires the
         ## robot be able to touch them without the planning scene reporting the contact as a
         ## collision. By adding link names to the ``touch_links`` array, we are telling the
         ## planning scene to ignore collisions between those links and the box. 
         ## For the robot, we set ``grasping_group = 'name of your end effector group name'``. 
+        """
         grasping_group = "gripper"
         touch_links = robot.get_link_names(group=grasping_group)
         scene.attach_box(eef_link, box_name, touch_links=touch_links)
@@ -106,8 +110,9 @@ def attach_box(box_name,robot,scene,eef_link, timeout=4):
 
 def detach_box(box_name,scene,eef_link_name, timeout=4):
 
-        ## Detaching Objects from the Robot
-        ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """Detaching Objects from the Robot
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """
         scene.remove_attached_object(eef_link_name, name=box_name)
         
         # We wait for the planning scene to update.
@@ -117,8 +122,9 @@ def detach_box(box_name,scene,eef_link_name, timeout=4):
 
 def remove_box(box_name,scene, timeout=4):
         
-        ## Removing Objects from the Planning Scene
+        """Removing Objects from the Planning Scene
         ## ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        """
         ## We can remove the box from the world.
         scene.remove_world_object(box_name)
 

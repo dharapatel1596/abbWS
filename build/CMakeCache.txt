@@ -1112,6 +1112,12 @@ realsense_gazebo_plugin_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libgazeb
 //Value Computed by CMake
 realsense_gazebo_plugin_SOURCE_DIR:STATIC=/home/dhara/arm_ws/src/realsense_gazebo_plugin/realsense_gazebo_plugin
 
+//Value Computed by CMake
+robot_custom_msgs_BINARY_DIR:STATIC=/home/dhara/arm_ws/build/robot_custom_msgs
+
+//Value Computed by CMake
+robot_custom_msgs_SOURCE_DIR:STATIC=/home/dhara/arm_ws/src/robot_custom_msgs
+
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake
 
@@ -1563,7 +1569,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=22
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=23
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

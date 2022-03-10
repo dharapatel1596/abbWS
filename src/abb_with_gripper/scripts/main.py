@@ -2,12 +2,12 @@
 # coding: utf-8
 import sys
 import rospy
+import global_variables
 from moveit_commander import MoveGroupCommander,PlanningSceneInterface, RobotCommander, roscpp_initialize
 from std_msgs.msg import  Float64MultiArray
 from geometry_msgs.msg import PoseStamped
 from collision_object import add_box_gripper, attach_box, detach_box, remove_box, add_box_on_table, remove_box_from_table
 
-topic_name = '/robot_line'
 class get_order_from_publisher(object):
     def __init__(self):
 
@@ -160,6 +160,6 @@ if __name__ == '__main__':
          ## spin() simply keeps python from exiting until this node is stopped
         rospy.spin()
         start = get_order_from_publisher()
-        start.register_subscriber(topic_name)
+        start.register_subscriber(global_variables.robot_topic_name)
     except rospy.ROSInterruptException:
         pass
