@@ -20,69 +20,51 @@
 
 (defclass robot_custom_msgs::dbRequest
   :super ros::object
-  :slots (_id ))
+  :slots (_start ))
 
 (defmethod robot_custom_msgs::dbRequest
   (:init
    (&key
-    ((:id __id) 0)
+    ((:start __start) "")
     )
    (send-super :init)
-   (setq _id (round __id))
+   (setq _start (string __start))
    self)
-  (:id
-   (&optional __id)
-   (if __id (setq _id __id)) _id)
+  (:start
+   (&optional __start)
+   (if __start (setq _start __start)) _start)
   (:serialization-length
    ()
    (+
-    ;; int64 _id
-    8
+    ;; string _start
+    4 (length _start)
     ))
   (:serialize
    (&optional strm)
    (let ((s (if strm strm
               (make-string-output-stream (send self :serialization-length)))))
-     ;; int64 _id
-#+(or :alpha :irix6 :x86_64)
-       (progn (sys::poke _id (send s :buffer) (send s :count) :long) (incf (stream-count s) 8))
-#-(or :alpha :irix6 :x86_64)
-       (cond ((and (class _id) (= (length (_id . bv)) 2)) ;; bignum
-              (write-long (ash (elt (_id . bv) 0) 0) s)
-              (write-long (ash (elt (_id . bv) 1) -1) s))
-             ((and (class _id) (= (length (_id . bv)) 1)) ;; big1
-              (write-long (elt (_id . bv) 0) s)
-              (write-long (if (>= _id 0) 0 #xffffffff) s))
-             (t                                         ;; integer
-              (write-long _id s)(write-long (if (>= _id 0) 0 #xffffffff) s)))
+     ;; string _start
+       (write-long (length _start) s) (princ _start s)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
    (buf &optional (ptr- 0))
-   ;; int64 _id
-#+(or :alpha :irix6 :x86_64)
-      (setf _id (prog1 (sys::peek buf ptr- :long) (incf ptr- 8)))
-#-(or :alpha :irix6 :x86_64)
-      (setf _id (let ((b0 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4)))
-                  (b1 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4))))
-              (cond ((= b1 -1) b0)
-                     ((and (= b1  0)
-                           (<= lisp::most-negative-fixnum b0 lisp::most-positive-fixnum))
-                      b0)
-                    ((= b1  0) (make-instance bignum :size 1 :bv (integer-vector b0)))
-                    (t (make-instance bignum :size 2 :bv (integer-vector b0 (ash b1 1)))))))
+   ;; string _start
+     (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _start (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
    ;;
    self)
   )
 
 (defclass robot_custom_msgs::dbResponse
   :super ros::object
-  :slots (_tableid _target_pick_position_x _target_pick_position_y _target_pick_position_z _target_pick_orientation_x _target_pick_orientation_y _target_pick_orientation_z _target_pick_orientation_w _target_place_position_x _target_place_position_y _target_place_position_z _target_place_orientation_x _target_place_orientation_y _target_place_orientation_z _target_place_orientation_w _text ))
+  :slots (_raw_id _table_id _order_time _target_pick_position_x _target_pick_position_y _target_pick_position_z _target_pick_orientation_x _target_pick_orientation_y _target_pick_orientation_z _target_pick_orientation_w _target_place_position_x _target_place_position_y _target_place_position_z _target_place_orientation_x _target_place_orientation_y _target_place_orientation_z _target_place_orientation_w _validation_text ))
 
 (defmethod robot_custom_msgs::dbResponse
   (:init
    (&key
-    ((:tableid __tableid) 0)
+    ((:raw_id __raw_id) 0)
+    ((:table_id __table_id) 0)
+    ((:order_time __order_time) "")
     ((:target_pick_position_x __target_pick_position_x) 0.0)
     ((:target_pick_position_y __target_pick_position_y) 0.0)
     ((:target_pick_position_z __target_pick_position_z) 0.0)
@@ -97,10 +79,12 @@
     ((:target_place_orientation_y __target_place_orientation_y) 0.0)
     ((:target_place_orientation_z __target_place_orientation_z) 0.0)
     ((:target_place_orientation_w __target_place_orientation_w) 0.0)
-    ((:text __text) "")
+    ((:validation_text __validation_text) "")
     )
    (send-super :init)
-   (setq _tableid (round __tableid))
+   (setq _raw_id (round __raw_id))
+   (setq _table_id (round __table_id))
+   (setq _order_time (string __order_time))
    (setq _target_pick_position_x (float __target_pick_position_x))
    (setq _target_pick_position_y (float __target_pick_position_y))
    (setq _target_pick_position_z (float __target_pick_position_z))
@@ -115,11 +99,17 @@
    (setq _target_place_orientation_y (float __target_place_orientation_y))
    (setq _target_place_orientation_z (float __target_place_orientation_z))
    (setq _target_place_orientation_w (float __target_place_orientation_w))
-   (setq _text (string __text))
+   (setq _validation_text (string __validation_text))
    self)
-  (:tableid
-   (&optional __tableid)
-   (if __tableid (setq _tableid __tableid)) _tableid)
+  (:raw_id
+   (&optional __raw_id)
+   (if __raw_id (setq _raw_id __raw_id)) _raw_id)
+  (:table_id
+   (&optional __table_id)
+   (if __table_id (setq _table_id __table_id)) _table_id)
+  (:order_time
+   (&optional __order_time)
+   (if __order_time (setq _order_time __order_time)) _order_time)
   (:target_pick_position_x
    (&optional __target_pick_position_x)
    (if __target_pick_position_x (setq _target_pick_position_x __target_pick_position_x)) _target_pick_position_x)
@@ -162,14 +152,18 @@
   (:target_place_orientation_w
    (&optional __target_place_orientation_w)
    (if __target_place_orientation_w (setq _target_place_orientation_w __target_place_orientation_w)) _target_place_orientation_w)
-  (:text
-   (&optional __text)
-   (if __text (setq _text __text)) _text)
+  (:validation_text
+   (&optional __validation_text)
+   (if __validation_text (setq _validation_text __validation_text)) _validation_text)
   (:serialization-length
    ()
    (+
-    ;; int64 _tableid
+    ;; int64 _raw_id
     8
+    ;; int64 _table_id
+    8
+    ;; string _order_time
+    4 (length _order_time)
     ;; float64 _target_pick_position_x
     8
     ;; float64 _target_pick_position_y
@@ -198,25 +192,39 @@
     8
     ;; float64 _target_place_orientation_w
     8
-    ;; string _text
-    4 (length _text)
+    ;; string _validation_text
+    4 (length _validation_text)
     ))
   (:serialize
    (&optional strm)
    (let ((s (if strm strm
               (make-string-output-stream (send self :serialization-length)))))
-     ;; int64 _tableid
+     ;; int64 _raw_id
 #+(or :alpha :irix6 :x86_64)
-       (progn (sys::poke _tableid (send s :buffer) (send s :count) :long) (incf (stream-count s) 8))
+       (progn (sys::poke _raw_id (send s :buffer) (send s :count) :long) (incf (stream-count s) 8))
 #-(or :alpha :irix6 :x86_64)
-       (cond ((and (class _tableid) (= (length (_tableid . bv)) 2)) ;; bignum
-              (write-long (ash (elt (_tableid . bv) 0) 0) s)
-              (write-long (ash (elt (_tableid . bv) 1) -1) s))
-             ((and (class _tableid) (= (length (_tableid . bv)) 1)) ;; big1
-              (write-long (elt (_tableid . bv) 0) s)
-              (write-long (if (>= _tableid 0) 0 #xffffffff) s))
+       (cond ((and (class _raw_id) (= (length (_raw_id . bv)) 2)) ;; bignum
+              (write-long (ash (elt (_raw_id . bv) 0) 0) s)
+              (write-long (ash (elt (_raw_id . bv) 1) -1) s))
+             ((and (class _raw_id) (= (length (_raw_id . bv)) 1)) ;; big1
+              (write-long (elt (_raw_id . bv) 0) s)
+              (write-long (if (>= _raw_id 0) 0 #xffffffff) s))
              (t                                         ;; integer
-              (write-long _tableid s)(write-long (if (>= _tableid 0) 0 #xffffffff) s)))
+              (write-long _raw_id s)(write-long (if (>= _raw_id 0) 0 #xffffffff) s)))
+     ;; int64 _table_id
+#+(or :alpha :irix6 :x86_64)
+       (progn (sys::poke _table_id (send s :buffer) (send s :count) :long) (incf (stream-count s) 8))
+#-(or :alpha :irix6 :x86_64)
+       (cond ((and (class _table_id) (= (length (_table_id . bv)) 2)) ;; bignum
+              (write-long (ash (elt (_table_id . bv) 0) 0) s)
+              (write-long (ash (elt (_table_id . bv) 1) -1) s))
+             ((and (class _table_id) (= (length (_table_id . bv)) 1)) ;; big1
+              (write-long (elt (_table_id . bv) 0) s)
+              (write-long (if (>= _table_id 0) 0 #xffffffff) s))
+             (t                                         ;; integer
+              (write-long _table_id s)(write-long (if (>= _table_id 0) 0 #xffffffff) s)))
+     ;; string _order_time
+       (write-long (length _order_time) s) (princ _order_time s)
      ;; float64 _target_pick_position_x
        (sys::poke _target_pick_position_x (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
      ;; float64 _target_pick_position_y
@@ -245,17 +253,17 @@
        (sys::poke _target_place_orientation_z (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
      ;; float64 _target_place_orientation_w
        (sys::poke _target_place_orientation_w (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
-     ;; string _text
-       (write-long (length _text) s) (princ _text s)
+     ;; string _validation_text
+       (write-long (length _validation_text) s) (princ _validation_text s)
      ;;
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
    (buf &optional (ptr- 0))
-   ;; int64 _tableid
+   ;; int64 _raw_id
 #+(or :alpha :irix6 :x86_64)
-      (setf _tableid (prog1 (sys::peek buf ptr- :long) (incf ptr- 8)))
+      (setf _raw_id (prog1 (sys::peek buf ptr- :long) (incf ptr- 8)))
 #-(or :alpha :irix6 :x86_64)
-      (setf _tableid (let ((b0 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4)))
+      (setf _raw_id (let ((b0 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4)))
                   (b1 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4))))
               (cond ((= b1 -1) b0)
                      ((and (= b1  0)
@@ -263,6 +271,20 @@
                       b0)
                     ((= b1  0) (make-instance bignum :size 1 :bv (integer-vector b0)))
                     (t (make-instance bignum :size 2 :bv (integer-vector b0 (ash b1 1)))))))
+   ;; int64 _table_id
+#+(or :alpha :irix6 :x86_64)
+      (setf _table_id (prog1 (sys::peek buf ptr- :long) (incf ptr- 8)))
+#-(or :alpha :irix6 :x86_64)
+      (setf _table_id (let ((b0 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4)))
+                  (b1 (prog1 (sys::peek buf ptr- :integer) (incf ptr- 4))))
+              (cond ((= b1 -1) b0)
+                     ((and (= b1  0)
+                           (<= lisp::most-negative-fixnum b0 lisp::most-positive-fixnum))
+                      b0)
+                    ((= b1  0) (make-instance bignum :size 1 :bv (integer-vector b0)))
+                    (t (make-instance bignum :size 2 :bv (integer-vector b0 (ash b1 1)))))))
+   ;; string _order_time
+     (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _order_time (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
    ;; float64 _target_pick_position_x
      (setq _target_pick_position_x (sys::peek buf ptr- :double)) (incf ptr- 8)
    ;; float64 _target_pick_position_y
@@ -291,8 +313,8 @@
      (setq _target_place_orientation_z (sys::peek buf ptr- :double)) (incf ptr- 8)
    ;; float64 _target_place_orientation_w
      (setq _target_place_orientation_w (sys::peek buf ptr- :double)) (incf ptr- 8)
-   ;; string _text
-     (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _text (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
+   ;; string _validation_text
+     (let (n) (setq n (sys::peek buf ptr- :integer)) (incf ptr- 4) (setq _validation_text (subseq buf ptr- (+ ptr- n))) (incf ptr- n))
    ;;
    self)
   )
@@ -301,7 +323,7 @@
   :super ros::object
   :slots ())
 
-(setf (get robot_custom_msgs::db :md5sum-) "0b56db4429947d5d82235b9718d8f033")
+(setf (get robot_custom_msgs::db :md5sum-) "9c311561e0acab097731704c85ada1aa")
 (setf (get robot_custom_msgs::db :datatype-) "robot_custom_msgs/db")
 (setf (get robot_custom_msgs::db :request) robot_custom_msgs::dbRequest)
 (setf (get robot_custom_msgs::db :response) robot_custom_msgs::dbResponse)
@@ -309,15 +331,17 @@
 (defmethod robot_custom_msgs::dbRequest
   (:response () (instance robot_custom_msgs::dbResponse :init)))
 
-(setf (get robot_custom_msgs::dbRequest :md5sum-) "0b56db4429947d5d82235b9718d8f033")
+(setf (get robot_custom_msgs::dbRequest :md5sum-) "9c311561e0acab097731704c85ada1aa")
 (setf (get robot_custom_msgs::dbRequest :datatype-) "robot_custom_msgs/dbRequest")
 (setf (get robot_custom_msgs::dbRequest :definition-)
       "#inputs
-int64 id
+string start
 
 ---
 #output
-int64 tableid
+int64 raw_id
+int64 table_id
+string order_time
 
 float64 target_pick_position_x
 float64 target_pick_position_y
@@ -337,21 +361,23 @@ float64 target_place_orientation_y
 float64 target_place_orientation_z
 float64 target_place_orientation_w
 
-string text
+string validation_text
 
 
 
 ")
 
-(setf (get robot_custom_msgs::dbResponse :md5sum-) "0b56db4429947d5d82235b9718d8f033")
+(setf (get robot_custom_msgs::dbResponse :md5sum-) "9c311561e0acab097731704c85ada1aa")
 (setf (get robot_custom_msgs::dbResponse :datatype-) "robot_custom_msgs/dbResponse")
 (setf (get robot_custom_msgs::dbResponse :definition-)
       "#inputs
-int64 id
+string start
 
 ---
 #output
-int64 tableid
+int64 raw_id
+int64 table_id
+string order_time
 
 float64 target_pick_position_x
 float64 target_pick_position_y
@@ -371,7 +397,7 @@ float64 target_place_orientation_y
 float64 target_place_orientation_z
 float64 target_place_orientation_w
 
-string text
+string validation_text
 
 
 
@@ -379,6 +405,6 @@ string text
 
 
 
-(provide :robot_custom_msgs/db "0b56db4429947d5d82235b9718d8f033")
+(provide :robot_custom_msgs/db "9c311561e0acab097731704c85ada1aa")
 
 

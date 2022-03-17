@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/robot_custom_msgs_generate_messages_py"
-  "/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_db.py"
+  "/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_OrderData.py"
   "/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/__init__.py"
 )
 

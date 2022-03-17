@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = ""
-services_str = "/home/dhara/arm_ws/src/robot_custom_msgs/srv/db.srv"
+services_str = "/home/dhara/arm_ws/src/robot_custom_msgs/srv/OrderData.srv"
 pkg_name = "robot_custom_msgs"
 dependencies_str = "actionlib_msgs;std_msgs"
 langs = "gencpp;geneus;genlisp;gennodejs;genpy"

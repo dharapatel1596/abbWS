@@ -1,8 +1,8 @@
 
 "use strict";
 
-let db = require('./db.js')
+let OrderData = require('./OrderData.js')
 
 module.exports = {
-  db: db,
+  OrderData: OrderData,
 };

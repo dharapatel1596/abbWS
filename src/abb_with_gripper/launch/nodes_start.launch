@@ -1,0 +1,10 @@
+<launch>
+
+    <!-- <arg name="node_start_delay" default="1.0" />  
+    <node name="main" pkg="abb_with_gripper"  type="main.py" output="screen" /> -->
+  <node pkg="abb_with_gripper" name="order_pub" type="order_pub.py" output="screen"/>
+  
+    <!-- <node name="order_pub" pkg="abb_with_gripper" type="order_pub.py" output="screen"  
+            launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' " />-->
+
+</launch>

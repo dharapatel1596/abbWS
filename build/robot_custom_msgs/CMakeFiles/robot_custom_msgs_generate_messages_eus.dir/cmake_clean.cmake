@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/robot_custom_msgs_generate_messages_eus"
-  "/home/dhara/arm_ws/devel/share/roseus/ros/robot_custom_msgs/srv/db.l"
+  "/home/dhara/arm_ws/devel/share/roseus/ros/robot_custom_msgs/srv/OrderData.l"
   "/home/dhara/arm_ws/devel/share/roseus/ros/robot_custom_msgs/manifest.l"
 )
 

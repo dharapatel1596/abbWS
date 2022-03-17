@@ -33,9 +33,18 @@ target_jointsdown = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 with conn:
     #print("connection received\n")
     cur = conn.cursor()
-    cur.execute("select * from completed_orders")
+    cur.execute("select * from test")
     raw = cur.fetchone()
-    print(raw)
+    old = raw[2]
+    #print(raw)
+    raw_id = raw[0]
+    table_id = raw[1]
+    table_name = 'completed_orders'
+    query = "INSERT INTO %s (id_from_order_db,order_for_table,oldtime,newtime) VALUES (?, ?,?,DateTime('now'))" % table_name
+    cur.execute(query,(raw_id,table_id,old))
+    conn.commit()
+
+
     # (id, joint1, joint2, joint3, joint4, joint5, joint6)= tuple(raw[0])
     # target_jointsdown[0] = joint1
     # target_jointsdown[1] = joint2

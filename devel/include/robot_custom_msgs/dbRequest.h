@@ -24,17 +24,17 @@ struct dbRequest_
   typedef dbRequest_<ContainerAllocator> Type;
 
   dbRequest_()
-    : id(0)  {
+    : start()  {
     }
   dbRequest_(const ContainerAllocator& _alloc)
-    : id(0)  {
+    : start(_alloc)  {
   (void)_alloc;
     }
 
 
 
-   typedef int64_t _id_type;
-  _id_type id;
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _start_type;
+  _start_type start;
 
 
 
@@ -65,7 +65,7 @@ return s;
 template<typename ContainerAllocator1, typename ContainerAllocator2>
 bool operator==(const ::robot_custom_msgs::dbRequest_<ContainerAllocator1> & lhs, const ::robot_custom_msgs::dbRequest_<ContainerAllocator2> & rhs)
 {
-  return lhs.id == rhs.id;
+  return lhs.start == rhs.start;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -88,12 +88,12 @@ namespace message_traits
 
 template <class ContainerAllocator>
 struct IsFixedSize< ::robot_custom_msgs::dbRequest_<ContainerAllocator> >
-  : TrueType
+  : FalseType
   { };
 
 template <class ContainerAllocator>
 struct IsFixedSize< ::robot_custom_msgs::dbRequest_<ContainerAllocator> const>
-  : TrueType
+  : FalseType
   { };
 
 template <class ContainerAllocator>
@@ -122,12 +122,12 @@ struct MD5Sum< ::robot_custom_msgs::dbRequest_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "ef7df1d34137d3879d089ad803388efa";
+    return "34ede85548daeef03201b4a532fb98e1";
   }
 
   static const char* value(const ::robot_custom_msgs::dbRequest_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xef7df1d34137d387ULL;
-  static const uint64_t static_value2 = 0x9d089ad803388efaULL;
+  static const uint64_t static_value1 = 0x34ede85548daeef0ULL;
+  static const uint64_t static_value2 = 0x3201b4a532fb98e1ULL;
 };
 
 template<class ContainerAllocator>
@@ -147,7 +147,7 @@ struct Definition< ::robot_custom_msgs::dbRequest_<ContainerAllocator> >
   static const char* value()
   {
     return "#inputs\n"
-"int64 id\n"
+"string start\n"
 "\n"
 ;
   }
@@ -167,7 +167,7 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.id);
+      stream.next(m.start);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -186,8 +186,8 @@ struct Printer< ::robot_custom_msgs::dbRequest_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::robot_custom_msgs::dbRequest_<ContainerAllocator>& v)
   {
-    s << indent << "id: ";
-    Printer<int64_t>::stream(s, indent + "  ", v.id);
+    s << indent << "start: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.start);
   }
 };
 

@@ -53,22 +53,22 @@ CMAKE_BINARY_DIR = /home/dhara/arm_ws/build
 # Include the progress variables for this target.
 include robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_py.dir/progress.make
 
-robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_db.py
+robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_OrderData.py
 robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/__init__.py
 
 
-/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_db.py: /opt/ros/melodic/lib/genpy/gensrv_py.py
-/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_db.py: /home/dhara/arm_ws/src/robot_custom_msgs/srv/db.srv
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dhara/arm_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python code from SRV robot_custom_msgs/db"
-	cd /home/dhara/arm_ws/build/robot_custom_msgs && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genpy/cmake/../../../lib/genpy/gensrv_py.py /home/dhara/arm_ws/src/robot_custom_msgs/srv/db.srv -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -p robot_custom_msgs -o /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv
+/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_OrderData.py: /opt/ros/melodic/lib/genpy/gensrv_py.py
+/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_OrderData.py: /home/dhara/arm_ws/src/robot_custom_msgs/srv/OrderData.srv
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dhara/arm_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python code from SRV robot_custom_msgs/OrderData"
+	cd /home/dhara/arm_ws/build/robot_custom_msgs && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genpy/cmake/../../../lib/genpy/gensrv_py.py /home/dhara/arm_ws/src/robot_custom_msgs/srv/OrderData.srv -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -p robot_custom_msgs -o /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv
 
 /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/__init__.py: /opt/ros/melodic/lib/genpy/genmsg_py.py
-/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/__init__.py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_db.py
+/home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/__init__.py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_OrderData.py
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dhara/arm_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python srv __init__.py for robot_custom_msgs"
 	cd /home/dhara/arm_ws/build/robot_custom_msgs && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv --initpy
 
 robot_custom_msgs_generate_messages_py: robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_py
-robot_custom_msgs_generate_messages_py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_db.py
+robot_custom_msgs_generate_messages_py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/_OrderData.py
 robot_custom_msgs_generate_messages_py: /home/dhara/arm_ws/devel/lib/python2.7/dist-packages/robot_custom_msgs/srv/__init__.py
 robot_custom_msgs_generate_messages_py: robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_py.dir/build.make
 

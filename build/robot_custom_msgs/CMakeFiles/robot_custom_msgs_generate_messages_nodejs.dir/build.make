@@ -53,16 +53,16 @@ CMAKE_BINARY_DIR = /home/dhara/arm_ws/build
 # Include the progress variables for this target.
 include robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_nodejs.dir/progress.make
 
-robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_nodejs: /home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/db.js
+robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_nodejs: /home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/OrderData.js
 
 
-/home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/db.js: /opt/ros/melodic/lib/gennodejs/gen_nodejs.py
-/home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/db.js: /home/dhara/arm_ws/src/robot_custom_msgs/srv/db.srv
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dhara/arm_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Javascript code from robot_custom_msgs/db.srv"
-	cd /home/dhara/arm_ws/build/robot_custom_msgs && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/dhara/arm_ws/src/robot_custom_msgs/srv/db.srv -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -p robot_custom_msgs -o /home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv
+/home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/OrderData.js: /opt/ros/melodic/lib/gennodejs/gen_nodejs.py
+/home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/OrderData.js: /home/dhara/arm_ws/src/robot_custom_msgs/srv/OrderData.srv
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/dhara/arm_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Javascript code from robot_custom_msgs/OrderData.srv"
+	cd /home/dhara/arm_ws/build/robot_custom_msgs && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/dhara/arm_ws/src/robot_custom_msgs/srv/OrderData.srv -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -p robot_custom_msgs -o /home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv
 
 robot_custom_msgs_generate_messages_nodejs: robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_nodejs
-robot_custom_msgs_generate_messages_nodejs: /home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/db.js
+robot_custom_msgs_generate_messages_nodejs: /home/dhara/arm_ws/devel/share/gennodejs/ros/robot_custom_msgs/srv/OrderData.js
 robot_custom_msgs_generate_messages_nodejs: robot_custom_msgs/CMakeFiles/robot_custom_msgs_generate_messages_nodejs.dir/build.make
 
 .PHONY : robot_custom_msgs_generate_messages_nodejs

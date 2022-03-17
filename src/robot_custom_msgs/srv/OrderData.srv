@@ -1,0 +1,30 @@
+#inputs
+string start
+
+---
+#output
+int64 raw_id
+int64 table_id
+string order_time
+
+float64 target_pick_position_x
+float64 target_pick_position_y
+float64 target_pick_position_z
+
+float64 target_pick_orientation_x
+float64 target_pick_orientation_y
+float64 target_pick_orientation_z
+float64 target_pick_orientation_w
+
+float64 target_place_position_x
+float64 target_place_position_y
+float64 target_place_position_z
+
+float64 target_place_orientation_x
+float64 target_place_orientation_y
+float64 target_place_orientation_z
+float64 target_place_orientation_w
+
+string validation_text
+
+

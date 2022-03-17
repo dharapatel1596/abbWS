@@ -24,7 +24,9 @@ struct dbResponse_
   typedef dbResponse_<ContainerAllocator> Type;
 
   dbResponse_()
-    : tableid(0)
+    : raw_id(0)
+    , table_id(0)
+    , order_time()
     , target_pick_position_x(0.0)
     , target_pick_position_y(0.0)
     , target_pick_position_z(0.0)
@@ -39,10 +41,12 @@ struct dbResponse_
     , target_place_orientation_y(0.0)
     , target_place_orientation_z(0.0)
     , target_place_orientation_w(0.0)
-    , text()  {
+    , validation_text()  {
     }
   dbResponse_(const ContainerAllocator& _alloc)
-    : tableid(0)
+    : raw_id(0)
+    , table_id(0)
+    , order_time(_alloc)
     , target_pick_position_x(0.0)
     , target_pick_position_y(0.0)
     , target_pick_position_z(0.0)
@@ -57,14 +61,20 @@ struct dbResponse_
     , target_place_orientation_y(0.0)
     , target_place_orientation_z(0.0)
     , target_place_orientation_w(0.0)
-    , text(_alloc)  {
+    , validation_text(_alloc)  {
   (void)_alloc;
     }
 
 
 
-   typedef int64_t _tableid_type;
-  _tableid_type tableid;
+   typedef int64_t _raw_id_type;
+  _raw_id_type raw_id;
+
+   typedef int64_t _table_id_type;
+  _table_id_type table_id;
+
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _order_time_type;
+  _order_time_type order_time;
 
    typedef double _target_pick_position_x_type;
   _target_pick_position_x_type target_pick_position_x;
@@ -108,8 +118,8 @@ struct dbResponse_
    typedef double _target_place_orientation_w_type;
   _target_place_orientation_w_type target_place_orientation_w;
 
-   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _text_type;
-  _text_type text;
+   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _validation_text_type;
+  _validation_text_type validation_text;
 
 
 
@@ -140,7 +150,9 @@ return s;
 template<typename ContainerAllocator1, typename ContainerAllocator2>
 bool operator==(const ::robot_custom_msgs::dbResponse_<ContainerAllocator1> & lhs, const ::robot_custom_msgs::dbResponse_<ContainerAllocator2> & rhs)
 {
-  return lhs.tableid == rhs.tableid &&
+  return lhs.raw_id == rhs.raw_id &&
+    lhs.table_id == rhs.table_id &&
+    lhs.order_time == rhs.order_time &&
     lhs.target_pick_position_x == rhs.target_pick_position_x &&
     lhs.target_pick_position_y == rhs.target_pick_position_y &&
     lhs.target_pick_position_z == rhs.target_pick_position_z &&
@@ -155,7 +167,7 @@ bool operator==(const ::robot_custom_msgs::dbResponse_<ContainerAllocator1> & lh
     lhs.target_place_orientation_y == rhs.target_place_orientation_y &&
     lhs.target_place_orientation_z == rhs.target_place_orientation_z &&
     lhs.target_place_orientation_w == rhs.target_place_orientation_w &&
-    lhs.text == rhs.text;
+    lhs.validation_text == rhs.validation_text;
 }
 
 template<typename ContainerAllocator1, typename ContainerAllocator2>
@@ -212,12 +224,12 @@ struct MD5Sum< ::robot_custom_msgs::dbResponse_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "d43bda5143fd7d192dd6191338cdba5e";
+    return "2d0e503dd50b9e8afd392ac3fc21b7af";
   }
 
   static const char* value(const ::robot_custom_msgs::dbResponse_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xd43bda5143fd7d19ULL;
-  static const uint64_t static_value2 = 0x2dd6191338cdba5eULL;
+  static const uint64_t static_value1 = 0x2d0e503dd50b9e8aULL;
+  static const uint64_t static_value2 = 0xfd392ac3fc21b7afULL;
 };
 
 template<class ContainerAllocator>
@@ -237,7 +249,9 @@ struct Definition< ::robot_custom_msgs::dbResponse_<ContainerAllocator> >
   static const char* value()
   {
     return "#output\n"
-"int64 tableid\n"
+"int64 raw_id\n"
+"int64 table_id\n"
+"string order_time\n"
 "\n"
 "float64 target_pick_position_x\n"
 "float64 target_pick_position_y\n"
@@ -257,7 +271,7 @@ struct Definition< ::robot_custom_msgs::dbResponse_<ContainerAllocator> >
 "float64 target_place_orientation_z\n"
 "float64 target_place_orientation_w\n"
 "\n"
-"string text\n"
+"string validation_text\n"
 "\n"
 "\n"
 "\n"
@@ -279,7 +293,9 @@ namespace serialization
   {
     template<typename Stream, typename T> inline static void allInOne(Stream& stream, T m)
     {
-      stream.next(m.tableid);
+      stream.next(m.raw_id);
+      stream.next(m.table_id);
+      stream.next(m.order_time);
       stream.next(m.target_pick_position_x);
       stream.next(m.target_pick_position_y);
       stream.next(m.target_pick_position_z);
@@ -294,7 +310,7 @@ namespace serialization
       stream.next(m.target_place_orientation_y);
       stream.next(m.target_place_orientation_z);
       stream.next(m.target_place_orientation_w);
-      stream.next(m.text);
+      stream.next(m.validation_text);
     }
 
     ROS_DECLARE_ALLINONE_SERIALIZER
@@ -313,8 +329,12 @@ struct Printer< ::robot_custom_msgs::dbResponse_<ContainerAllocator> >
 {
   template<typename Stream> static void stream(Stream& s, const std::string& indent, const ::robot_custom_msgs::dbResponse_<ContainerAllocator>& v)
   {
-    s << indent << "tableid: ";
-    Printer<int64_t>::stream(s, indent + "  ", v.tableid);
+    s << indent << "raw_id: ";
+    Printer<int64_t>::stream(s, indent + "  ", v.raw_id);
+    s << indent << "table_id: ";
+    Printer<int64_t>::stream(s, indent + "  ", v.table_id);
+    s << indent << "order_time: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.order_time);
     s << indent << "target_pick_position_x: ";
     Printer<double>::stream(s, indent + "  ", v.target_pick_position_x);
     s << indent << "target_pick_position_y: ";
@@ -343,8 +363,8 @@ struct Printer< ::robot_custom_msgs::dbResponse_<ContainerAllocator> >
     Printer<double>::stream(s, indent + "  ", v.target_place_orientation_z);
     s << indent << "target_place_orientation_w: ";
     Printer<double>::stream(s, indent + "  ", v.target_place_orientation_w);
-    s << indent << "text: ";
-    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.text);
+    s << indent << "validation_text: ";
+    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.validation_text);
   }
 };
 

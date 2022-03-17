@@ -40,7 +40,7 @@ template<>
 struct MD5Sum< ::robot_custom_msgs::db > {
   static const char* value()
   {
-    return "0b56db4429947d5d82235b9718d8f033";
+    return "9c311561e0acab097731704c85ada1aa";
   }
 
   static const char* value(const ::robot_custom_msgs::db&) { return value(); }

@@ -38,7 +38,7 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/robot_custom_msgs/srv" TYPE FILE FILES "/home/dhara/arm_ws/src/robot_custom_msgs/srv/db.srv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/robot_custom_msgs/srv" TYPE FILE FILES "/home/dhara/arm_ws/src/robot_custom_msgs/srv/OrderData.srv")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
