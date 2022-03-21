@@ -9,7 +9,7 @@ import moveit_msgs.msg
 import geometry_msgs.msg
 
 from std_msgs.msg import String
-from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
 
 
 # #abb.set_joint_value_target(target_joints)
@@ -70,21 +70,29 @@ def move_group_python_interface_tutorial():
   print (robot.get_current_state())
   print ("============")
 
+  print ("============ Printing EEF state")
   #to get end effector pose
   print(group.get_current_pose())
+  
+  print ("============ Printing euler angles")
+  euler = euler_from_quaternion([-0.45,0.5,0.45,0.5],axes='sxyz')
+  print(euler)
+  
   group.clear_pose_targets()
+
+
   ## Planning to a Pose goal
   ## ^^^^^^^^^^^^^^^^^^^^^^^
   ## We can plan a motion for this group to a desired pose for the
   ## end-effector
-  print ("============ Generating plan 1")
+  # print ("============ Generating plan 1")
   
-  pose_target = geometry_msgs.msg.Pose()
-  pose_target.orientation.w = 1.0
-  pose_target.position.x = 0.7
-  pose_target.position.y = -0.05
-  pose_target.position.z = 1.1
-  group.set_pose_target(pose_target)
+  # pose_target = geometry_msgs.msg.Pose()
+  # pose_target.orientation.w = 1.0
+  # pose_target.position.x = 0.7
+  # pose_target.position.y = -0.05
+  # pose_target.position.z = 1.1
+  # group.set_pose_target(pose_target)
 
   # ## Now, we call the planner to compute the plan
   # ## and visualize it if successful

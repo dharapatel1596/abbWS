@@ -5,14 +5,18 @@ import rospy
 from moveit_commander import MoveGroupCommander,PlanningSceneInterface, RobotCommander, roscpp_initialize
 from geometry_msgs.msg import PoseStamped
 from collision_object import add_box_gripper, attach_box, detach_box, remove_box, add_box_on_table, remove_box_from_table
-from db_service_server import callback, create_connection
+from db_service_server import create_connection
 from robot_custom_msgs.srv import OrderData, OrderDataRequest
 from std_msgs.msg import Bool
+from main_process_methods import pick_position, place_position, place_box, pick_box, go_to_safe_pose
 
 class PickAndPlace(object):
 
     def __init__(self):
-        self.execute = True
+
+        ## Execution Flag
+        self.execution_flag = True
+        
         self.db_file = r"/home/dhara/arm_ws/src/armDB"
         ## Initialize the move_group API
         self.move_group = roscpp_initialize(sys.argv)
@@ -43,28 +47,45 @@ class PickAndPlace(object):
         self.scene = PlanningSceneInterface()
 
         ## Instantiate Pose for placing position
-        self.target_pose = PoseStamped()
-        self.target_pose.header.frame_id = self.abb.get_planning_frame()
+        self.place_pose = PoseStamped()
+        self.place_pose.header.frame_id = self.abb.get_planning_frame()
 
         ## Instantiate Pose for picking position
-        self.target_pose_pick = PoseStamped()
-        self.target_pose_pick.header.frame_id = self.abb.get_planning_frame()
+        self.pick_pose = PoseStamped()
+        self.pick_pose.header.frame_id = self.abb.get_planning_frame()
+
 
         rospy.loginfo('-----Robot Node started-----Ready for operation-----')
 
-    def callback(self,data):
-        ##do nothing
-        self.execute = not(data.data)
-        print('execute= %s'%self.execute)
-        if self.execute == False:
-            #rospy.loginfo('stop robot')
+    def error_handling(self):
+        objects = self.scene.get_known_object_names()
+        print(objects)
+
+        if self.scene.get_attached_objects(['box']):
+            print('going to side position')
+            go_to_safe_pose(robot=self.robot,arm_move_group=self.abb,eef_link=self.end_effector_link)
+            detach_box(box_name='box',scene=self.scene,eef_link_name=self.end_effector_link)
+            remove_box(box_name='box',scene=self.scene)
+            rospy.sleep(5)
+            self.execution_flag = True
+        else:
+            self.execution_flag = True
+
+    def sensor_callback(self,data):
+        if data.data == True:
+            self.execution_flag = not(data.data)
+            rospy.loginfo('stop robot')
             self.abb.stop()
+        else:
+            #self.main_process()
+            self.execution_flag = False
+            self.error_handling()
             
     def check_for_sensor(self):
-        rospy.Subscriber("/stop_motion", Bool, self.callback)
+        rospy.Subscriber("/stop_motion", Bool, self.sensor_callback)
 
     def main_process(self):
-        if  self.execute == True:
+        if  self.execution_flag == True:
             ## Instantiate service to fetch order from DB
             call_service = rospy.ServiceProxy('get_order', OrderData) 
             ## Instantiate service output  
@@ -75,111 +96,31 @@ class PickAndPlace(object):
 
             #print(data)
             if data.validation_text == 'valid':
-                ## Define picking position -> target_pose_pick
-                self.target_pose_pick.pose.position.x = data.target_pick_position_x
-                self.target_pose_pick.pose.position.y = data.target_pick_position_y
-                self.target_pose_pick.pose.position.z = data.target_pick_position_z
-                self.target_pose_pick.pose.orientation.x = data.target_pick_orientation_x
-                self.target_pose_pick.pose.orientation.y = data.target_pick_orientation_y
-                self.target_pose_pick.pose.orientation.z = data.target_pick_orientation_z
-                self.target_pose_pick.pose.orientation.w = data.target_pick_orientation_w
-                #print('Placing position: %s' %self.target_pose_pick)
-
-                ## Define placing position -> target_pose
-                self.target_pose.pose.position.x = data.target_place_position_x
-                self.target_pose.pose.position.y = data.target_place_position_y
-                self.target_pose.pose.position.z = data.target_place_position_z
-                self.target_pose.pose.orientation.x = data.target_place_orientation_x
-                self.target_pose.pose.orientation.y = data.target_place_orientation_y
-                self.target_pose.pose.orientation.z = data.target_place_orientation_z
-                self.target_pose.pose.orientation.w = data.target_place_orientation_w
-                #print('Picking position: %s' %self.target_pose)
-
-                tableidstr = str(data.table_id)
-                rospy.loginfo("-----Order received for table number: %s" %tableidstr)
-                if self.execute == True:
-                    ## Put box on picking table
-                    add_box_on_table(tableid='0',scene=self.scene)
+                ## Define picking position 
+                self.pick_pose = pick_position(pose_array=data, arm_move_group=self.abb)
+                print('Picking position received: %s' %self.pick_pose)
                 
-                if self.execute == True:
-                    ## Go to picking TOP position
-                    self.abb.set_start_state(self.robot.get_current_state())
-                    self.abb.set_pose_target(self.target_pose_pick, self.end_effector_link)
-                    self.abb.go(wait=False)
-                    rospy.loginfo('---after picking TOP pose---')
-                    rospy.sleep(2)
-                if self.execute == True:
-                    ## Open gripper
-                    self.gripper.set_named_target("open")
-                    self.gripper.go( wait=False)
-                    rospy.sleep(1)
-                if self.execute == True:
-                    ## Go down in z direction to pick the box
-                    self.abb.set_start_state(self.robot.get_current_state())
-                    self.target_pose_pick.pose.position.z = self.target_pose_pick.pose.position.z - 0.66
-                    self.abb.set_pose_target(self.target_pose_pick, self.end_effector_link)
-                    self.abb.go(wait=False)
-                    rospy.loginfo('---reched down to pick---')
-                    rospy.sleep(2)
-                if self.execute == True:
-                    ## Close gripper
-                    self.gripper.set_named_target("close")
-                    self.gripper.go(wait=False)
-                    rospy.sleep(1)
-                if self.execute == True:
-                    remove_box_from_table(box_name='0',scene=self.scene)
+                ## Define placing position
+                self.place_pose = place_position(pose_array=data, arm_move_group=self.abb)
+                print('Placing position received: %s' %self.place_pose)
 
-                    ## box to gripper
-                    add_box_gripper(self.scene)
-                    attach_box(box_name='box',robot=self.robot,scene=self.scene,eef_link=self.end_effector_link)
-                if self.execute == True:
-                    ## Go up in z direction after picking the box
-                    self.abb.set_start_state(self.robot.get_current_state())
-                    self.target_pose_pick.pose.position.z = self.target_pose_pick.pose.position.z + 0.64
-                    self.abb.set_pose_target(self.target_pose_pick, self.end_effector_link)
-                    self.abb.go(wait=False)
-                    rospy.loginfo('---gone up after pick---')
-                    rospy.sleep(2)
-                    
-                    self.abb.clear_pose_targets()
-                    rospy.loginfo('cleared all targets')
-                if self.execute == True:
-                    ## Go to placing TOP position
-                    self.abb.set_start_state(self.robot.get_current_state())
-                    self.abb.set_pose_target(self.target_pose, self.end_effector_link)
-                    self.abb.go(wait=False)
-                    rospy.loginfo('---after placing TOP pose---')
-                    rospy.sleep(4)
-                if self.execute == True:
-                    ## Go down in z direction to place the box
-                    self.abb.set_start_state(self.robot.get_current_state())
-                    self.target_pose.pose.position.z = self.target_pose.pose.position.z - 0.66
-                    self.abb.set_pose_target(self.target_pose, self.end_effector_link)
-                    self.abb.go(wait=False)
-                    rospy.loginfo('---gone down to place---')
-                    rospy.sleep(2)
-                if self.execute == True:
-                    ## Open gripper
-                    self.gripper.set_named_target("open")
-                    self.gripper.go()
-                    rospy.sleep(1)
+                ## Define table order
+                table_id_str = str(data.table_id)
+                rospy.loginfo("-----Order received for table number: %s" %table_id_str)
+
+                if self.execution_flag == True:
+                    rospy.loginfo("-----sending execute in pick function: %s" %self.execution_flag)
+                    pick_box(pose=self.pick_pose, robot_group=self.robot, arm_move_group=self.abb,
+                                    gripper_move_group=self.gripper, eef_link=self.end_effector_link,
+                                    planning_scene=self.scene, execution_flag = self.execution_flag)
+                if  self.execution_flag == True:
+                    rospy.loginfo("-----sending execute in place function: %s" %self.execution_flag)
+                    place_box(pose=self.place_pose, robot_group=self.robot, arm_move_group=self.abb,
+                                    gripper_move_group=self.gripper, eef_link=self.end_effector_link,
+                                    planning_scene=self.scene, table_name=table_id_str, execution_flag = self.execution_flag)
+
                 
-                    ## Remove box from gripper
-                    detach_box(box_name='box',scene=self.scene,eef_link_name=self.end_effector_link)
-                    remove_box(box_name='box',scene=self.scene)
-
-                    ## Place box on placing table
-                    add_box_on_table(tableidstr,self.scene)
-                    rospy.sleep(1)
-                if self.execute == True:
-                    ## Go up in z direction
-                    self.abb.set_start_state(self.robot.get_current_state())
-                    self.target_pose.pose.position.z = self.target_pose.pose.position.z + 0.64
-                    self.abb.set_pose_target(self.target_pose,self.end_effector_link)
-                    self.abb.go(wait=False)
-                    rospy.loginfo('---after placing pose---')
-                    rospy.sleep(2)
-                if self.execute == True:
+                if self.execution_flag == True:
                     ## Update DB
                     self.add_entry_to_db('completed_orders',data.raw_id,data.table_id,data.order_time)
                     self.delete_entry_from_db('test',data.raw_id)
@@ -192,14 +133,14 @@ class PickAndPlace(object):
                     self.abb.go(wait=False)
                     rospy.sleep(1)
 
-                    remove_box_from_table(tableidstr,self.scene)
+                    remove_box_from_table(table_id_str,self.scene)
                     rospy.sleep(1)
                 
             else:
                 rospy.loginfo('------Waiting for new order-----')
                 rospy.sleep(5)
         else:
-            rospy.loginfo('waiting')
+            rospy.loginfo('execution halt---waiting')
 
     def delete_entry_from_db(self,table_name,raw_id):
         """ Deletes entry according to raw_id from

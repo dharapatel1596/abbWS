@@ -89,15 +89,17 @@ def move_group_python_interface_tutorial():
         start_pose = PoseStamped()
         start_pose.header.frame_id = abb.get_planning_frame()
         ## Position for table 1
-        # start_pose.pose.position.x = 0.0 
-        # start_pose.pose.position.y = 2.0 
-        # start_pose.pose.position.z = 1.78  
-        # # start_pose.pose.orientation.x = -0.5
-        # # start_pose.pose.orientation.y = 0.5
-        # # start_pose.pose.orientation.z = 0.5
-        # # start_pose.pose.orientation.w = 0.5
-        # q = quaternion_from_euler(0, 1.5707963, 1.5707963) #zyx
-        # start_pose.pose.orientation = Quaternion(*q)
+        start_pose.pose.position.x = 0.0 
+        start_pose.pose.position.y = 2.0 
+        start_pose.pose.position.z = 1.78  
+        # start_pose.pose.orientation.x = -0.5
+        # start_pose.pose.orientation.y = 0.5
+        # start_pose.pose.orientation.z = 0.5
+        # start_pose.pose.orientation.w = 0.5
+        q = quaternion_from_euler(0, 1.5707963, 0,axes='szyx')
+        #q = quaternion_from_euler(0, 1.5707963, 1.5707963) #zyx
+        start_pose.pose.orientation = Quaternion(*q)
+        print(start_pose)
 
         # Position for table 2
         start_pose.pose.position.x = -1.25 
@@ -133,12 +135,12 @@ def move_group_python_interface_tutorial():
         abb.go(joints=start_pose,wait=False)
         rospy.sleep(10)
 
-        #go down in z direction to pick the box
-        abb.set_start_state(robot.get_current_state())
-        start_pose.pose.position.z = start_pose.pose.position.z - 0.6
-        abb.set_pose_target(start_pose, end_effector_link)
-        abb.go(joints=start_pose,wait=False)
-        rospy.sleep(10)
+        # go down in z direction to pick the box
+        # abb.set_start_state(robot.get_current_state())
+        # start_pose.pose.position.z = start_pose.pose.position.z - 0.6
+        # abb.set_pose_target(start_pose, end_effector_link)
+        # abb.go(joints=start_pose,wait=False)
+        # rospy.sleep(10)
 
        
         #scene.remove_attached_object(end_effector_link, name=box_name)

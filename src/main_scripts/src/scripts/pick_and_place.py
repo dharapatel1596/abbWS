@@ -2,10 +2,10 @@
 # coding: utf-8
 import sys
 import rospy
-from moveit_commander import MoveGroupCommander,PlanningSceneInterface, RobotCommander, roscpp_initialize
+from moveit_commander import MoveGroupCommander, PlanningSceneInterface, RobotCommander, roscpp_initialize
 from geometry_msgs.msg import PoseStamped
-from collision_object import remove_box_from_table
 from robot_custom_msgs.srv import OrderData, OrderDataRequest
+from collision_object import remove_box_from_table
 from main_process_methods import add_entry_to_db, delete_entry_from_db, pick_box, pick_position, place_box, place_position
 
 class PickAndPlace(object):
@@ -53,58 +53,54 @@ class PickAndPlace(object):
     
     def main_process(self):
             
-            ## Instantiate service to fetch order from DB
-            call_service = rospy.ServiceProxy('get_order', OrderData) 
-            ## Instantiate service output  
-            request = OrderDataRequest()
-            request.start = 'get-order'
+        ## Instantiate service to fetch order from DB
+        call_service = rospy.ServiceProxy('get_order', OrderData) 
+        request = OrderDataRequest()
+        request.start = 'get-order'
 
-            ## Call service
-            data = call_service(request)
+        ## Call service
+        data = call_service(request)
 
-            #print(data)
-            if data.validation_text == 'valid':
-                ## Define picking position 
-                self.pick_pose = pick_position(pose_array=data,arm_move_group=self.abb)
-                print('Picking position received: %s' %self.pick_pose)
-                
-                ## Define placing position
-                self.place_pose = place_position(pose_array=data,arm_move_group=self.abb)
-                print('Placing position received: %s' %self.place_pose)
+        if data.validation_text == 'valid':
+            ## Define picking position 
+            self.pick_pose = pick_position(pose_array=data, arm_move_group=self.abb)
+            print('Picking position received: %s' %self.pick_pose)
+            
+            ## Define placing position
+            self.place_pose = place_position(pose_array=data, arm_move_group=self.abb)
+            print('Placing position received: %s' %self.place_pose)
 
-                ## Define table order
-                table_id_str = str(data.table_id)
-                rospy.loginfo("-----Order received for table number: %s" %table_id_str)
+            ## Define table order
+            table_id_str = str(data.table_id)
+            rospy.loginfo("-----Order received for table number: %s" %table_id_str)
 
 
-                pick_box(pose=self.pick_pose,robot_group=self.robot,arm_move_group=self.abb,
-                            gripper_move_group=self.gripper,eef_link=self.end_effector_link,
-                            planning_scene=self.scene)
+            pick_box(pose=self.pick_pose, robot_group=self.robot, arm_move_group=self.abb,
+                        gripper_move_group=self.gripper, eef_link=self.end_effector_link,
+                        planning_scene=self.scene)
 
-                place_box(pose=self.place_pose, robot_group=self.robot, arm_move_group=self.abb,
-                            gripper_move_group=self.gripper,eef_link=self.end_effector_link,
-                            planning_scene=self.scene, table_name= table_id_str)
-                
-                ## Update DB
-                add_entry_to_db(db_path=self.db_file,table_name='completed_orders',raw_id=data.raw_id,
-                                table_id=data.table_id,order_time=data.order_time)
-                delete_entry_from_db(db_path=self.db_file,table_name='test',raw_id=data.raw_id)
+            place_box(pose=self.place_pose, robot_group=self.robot, arm_move_group=self.abb,
+                        gripper_move_group=self.gripper, eef_link=self.end_effector_link,
+                        planning_scene=self.scene, table_name=table_id_str)
+            
+            ## Update DB
+            add_entry_to_db(db_path=self.db_file, table_name='completed_orders', raw_id=data.raw_id,
+                            table_id=data.table_id, order_time=data.order_time)
+            delete_entry_from_db(db_path=self.db_file, table_name='test', raw_id=data.raw_id)
 
-                ## Clear all pose from MoveIT
-                self.abb.clear_pose_targets()
-                rospy.loginfo('cleared all targets')
-                ## Go to Home
-                self.abb.set_named_target("down")
-                self.abb.go(wait=False)
-                rospy.sleep(1)
-                remove_box_from_table(table_id_str,self.scene)
-                rospy.sleep(1)
-                
-            else:
-                rospy.loginfo('------Waiting for new order-----')
-                rospy.sleep(5)
-
-
+            ## Clear all pose from MoveIT
+            self.abb.clear_pose_targets()
+            rospy.loginfo('cleared all targets')
+            ## Go to Home
+            self.abb.set_named_target("down")
+            self.abb.go(wait=False)
+            rospy.sleep(1)
+            remove_box_from_table(box_name=table_id_str, scene=self.scene)
+            rospy.sleep(1)
+            
+        else:
+            rospy.loginfo('------Waiting for new order-----')
+            rospy.sleep(5)
 
 if __name__ == '__main__':
     try:

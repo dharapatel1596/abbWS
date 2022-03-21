@@ -1,13 +1,11 @@
 #!/usr/bin/env python
-
+# coding: utf-8
 import rospy
 from robot_custom_msgs.srv._OrderData import OrderData, OrderDataResponse
 from geometry_msgs.msg import Quaternion
-from tf.transformations import quaternion_from_euler
+from tf.transformations import quaternion_from_euler, euler_from_quaternion
 import sqlite3
 from sqlite3 import Error
-
-
 
 def create_connection(db_file):
     """ create a database connection to the SQLite database
@@ -73,7 +71,6 @@ def callback(request):
             order_data.target_place_orientation_y = stack.y
             order_data.target_place_orientation_z = stack.z
             order_data.target_place_orientation_w = stack.w
-
             order_data.validation_text = 'valid'
             
             return order_data  

@@ -2,3 +2,4 @@
 # coding: utf-8
 
 robot_topic_name = '/robot_line'
+execution_flag = None
