@@ -6,7 +6,7 @@ from moveit_commander import MoveGroupCommander, PlanningSceneInterface, RobotCo
 from geometry_msgs.msg import PoseStamped
 from robot_custom_msgs.srv import OrderData, OrderDataRequest
 from collision_object import remove_box_from_table
-from main_process_methods import add_entry_to_db, delete_entry_from_db, pick_box, pick_position, place_box, place_position
+from main_process_methods import update_database,pick_box, pick_position, place_box, place_position
 
 class PickAndPlace(object):
     def __init__(self):
@@ -84,9 +84,8 @@ class PickAndPlace(object):
                         planning_scene=self.scene, table_name=table_id_str)
             
             ## Update DB
-            add_entry_to_db(db_path=self.db_file, table_name='completed_orders', raw_id=data.raw_id,
-                            table_id=data.table_id, order_time=data.order_time)
-            delete_entry_from_db(db_path=self.db_file, table_name='test', raw_id=data.raw_id)
+            update_database(db_path=self.db_file,table_name_add='completed_orders',table_name_delete='order_data',
+                                raw_id=data.raw_id,table_id=data.table_id,order_time=data.order_time)
 
             ## Clear all pose from MoveIT
             self.abb.clear_pose_targets()

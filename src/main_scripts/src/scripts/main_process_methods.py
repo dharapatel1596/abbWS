@@ -21,6 +21,22 @@ def delete_entry_from_db(db_path, table_name, raw_id):
         db_connect.commit()
         return rospy.loginfo('-----Entry deleted successfully from %s-----'%table_name)
 
+def update_database(db_path,table_name_add,table_name_delete, raw_id,table_id,order_time):
+    """ Adds entry according to table_name 
+        return: successful operation
+    """
+    db_connect = create_connection(db_path)
+    with db_connect:
+        db_cursor = db_connect.cursor()
+        query = "INSERT INTO %s (id_from_order_db,order_for_table,oldtime,newtime) VALUES (? ,?, ?,DateTime('now'))" % table_name_add
+        db_cursor.execute(query,(raw_id, table_id,order_time))
+        #db_connect.commit()
+
+        query = "DELETE FROM %s WHERE id=?" % table_name_delete
+        db_cursor.execute(query, (raw_id,))
+        db_connect.commit()
+        return rospy.loginfo('-----Database updated-----')
+
 def add_entry_to_db(db_path, table_name, raw_id, table_id, order_time):
     """ Adds entry according to table_name
         
