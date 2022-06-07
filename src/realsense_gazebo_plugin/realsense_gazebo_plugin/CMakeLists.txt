@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.22.3)
 project(realsense_gazebo_plugin)
 
+# Add support for c++11
+add_definitions(-std=c++11)
 # Load catkin and all dependencies required for this package
 find_package(catkin REQUIRED COMPONENTS
     roscpp
@@ -11,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
 )
 find_package(gazebo REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
 catkin_package(
     DEPENDS
