@@ -41,7 +41,7 @@ class PickPlaceClass(object):
 
         ## Instantiate Pose for placing position
         self.place_pose = PoseStamped()
-        self.place_pose.header.frame_id = self.abb.get_planning_frame()
+        self.place_pose.header.frame_id = self.abb.get_planning_frame() # '/world', '/tool','/tcp'
 
         ## Instantiate Pose for picking position
         self.pick_pose = PoseStamped()

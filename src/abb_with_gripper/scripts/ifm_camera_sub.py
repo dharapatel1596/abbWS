@@ -14,7 +14,6 @@ class ImageListener:
     def __init__(self):
         self.bridge = CvBridge()
         
-
     def cm2pix(self, dist, real_length, image_width, cam_fov):
         dist = dist / 10
         return real_length / (2 * math.tan(cam_fov / 2 * math.pi / 180) * dist / image_width)

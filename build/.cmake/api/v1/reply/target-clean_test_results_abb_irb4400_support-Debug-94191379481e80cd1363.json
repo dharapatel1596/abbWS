@@ -1,0 +1,82 @@
+{
+	"backtrace" : 3,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target",
+			"catkin_run_tests_target",
+			"roslaunch_add_file_check"
+		],
+		"files" : 
+		[
+			"/opt/ros/melodic/share/catkin/cmake/test/tests.cmake",
+			"/opt/ros/melodic/share/roslaunch/cmake/roslaunch-extras.cmake",
+			"abb/abb/abb_irb4400_support/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 2
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 10,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 66,
+				"parent" : 1
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 185,
+				"parent" : 2
+			}
+		]
+	},
+	"id" : "clean_test_results_abb_irb4400_support::@4e43016ce80b6b4fec04",
+	"name" : "clean_test_results_abb_irb4400_support",
+	"paths" : 
+	{
+		"build" : "abb/abb/abb_irb4400_support",
+		"source" : "abb/abb/abb_irb4400_support"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 3,
+			"isGenerated" : true,
+			"path" : "/home/dhara/arm_ws/build/abb/abb/abb_irb4400_support/CMakeFiles/clean_test_results_abb_irb4400_support",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "/home/dhara/arm_ws/build/abb/abb/abb_irb4400_support/CMakeFiles/clean_test_results_abb_irb4400_support.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

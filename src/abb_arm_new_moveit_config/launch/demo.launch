@@ -42,6 +42,10 @@
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 
+  <!-- We assume that no safety controller is connected, so we need to fake the corresponding interface -->
+  <!--  - this includes: speed override -->
+  <include file="$(find prbt_hardware_support)/launch/fake_safety_interface.launch" />
+  
   <!-- Run the main MoveIt! executable without trajectory execution (we do not have controllers configured by default) -->
   <include file="$(find abb_arm_new_moveit_config)/launch/move_group.launch">
     <arg name="allow_trajectory_execution" value="true"/>

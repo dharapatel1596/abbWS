@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/realsense2_camera_generate_messages_nodejs"
   "/home/dhara/arm_ws/devel/share/gennodejs/ros/realsense2_camera/msg/Extrinsics.js"
   "/home/dhara/arm_ws/devel/share/gennodejs/ros/realsense2_camera/msg/IMUInfo.js"
   "/home/dhara/arm_ws/devel/share/gennodejs/ros/realsense2_camera/msg/Metadata.js"
   "/home/dhara/arm_ws/devel/share/gennodejs/ros/realsense2_camera/srv/DeviceInfo.js"
+  "CMakeFiles/realsense2_camera_generate_messages_nodejs"
 )
 
 # Per-language clean rules from dependency scanning.

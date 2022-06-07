@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/realsense2_camera_generate_messages_cpp"
+  "/home/dhara/arm_ws/devel/include/realsense2_camera/DeviceInfo.h"
   "/home/dhara/arm_ws/devel/include/realsense2_camera/Extrinsics.h"
   "/home/dhara/arm_ws/devel/include/realsense2_camera/IMUInfo.h"
   "/home/dhara/arm_ws/devel/include/realsense2_camera/Metadata.h"
-  "/home/dhara/arm_ws/devel/include/realsense2_camera/DeviceInfo.h"
+  "CMakeFiles/realsense2_camera_generate_messages_cpp"
 )
 
 # Per-language clean rules from dependency scanning.
